@@ -24,14 +24,17 @@ class ForgotRequest extends FormRequest
     public function rules()
     {
         return [
-            'username-or-email' => 'required'
+            'username-or-email'    => 'required',
+            'g-recaptcha-response' => 'required|recaptcha'
         ];
     }
 
     public function messages()
     {
         return [
-            'username-or-email.required' => 'Vui lòng nhập tên truy cập hoặc email của bạn!'
+            'username-or-email.required'     => 'Vui lòng nhập tên truy cập hoặc email của bạn!',
+            'g-recaptcha-response.required'  => 'Trường reCAPTCHA không được bỏ trống!',
+            'g-recaptcha-response.recaptcha' => 'Trường reCAPTCHA không chính xác!'
         ];
     }
 }

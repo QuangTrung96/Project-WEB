@@ -5,6 +5,8 @@
   {{ Form::open(['method' => 'POST', 'route' => 'forgot_post', 'role'=>'form']) }}
   	<p class="minihead">Username or Email:</p>
   	{{ Form::text('username-or-email', '', ['class' => 'fullinput']) }}
+  	<p class="minihead">Recaptcha:</p>
+    <p>{!! Recaptcha::render() !!}</p>
   	{{ Form::submit('Reset Password') }}
   {{ Form::close() }}
 @endsection

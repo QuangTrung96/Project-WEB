@@ -37,6 +37,16 @@ Route::group(['prefix' => 'member'], function() {
 	          ->name('active_reset_get')
 	          ->middleware('is_login');
 });
+
+// Scholastic
+Route::group(['prefix' => 'scholastic', 'middleware' => 'check_access:admin'], function() {
+	Route::get('list', 'ScholasticController@getList')
+	          ->name('scholastic_list_get');
+	Route::post('add', 'ScholasticController@postAdd')
+	           ->name('scholastic_add_post');
+	Route::post('edit', 'ScholasticController@postEdit')
+	           ->name('scholastic_edit_post');
+});
 	          
 Route::get('create_user', function() {
 	$user = Sentinel::getUserRepository()->create([
@@ -55,11 +65,11 @@ Route::get('create_user', function() {
 
 Route::get('create_user_active', function() {
 	$userActive = Sentinel::registerAndActivate([
-		'username' => 'huynq6953',
+		'username' => 'trungtq6985',
 		'email'    => 'trinhquangtrung_t59@hus.edu.vn',
 		'password' => '123456',
-		'last_name' => 'Nguyễn Quang',
-		'first_name' => 'Huy',
+		'last_name' => 'Trịnh Quang',
+		'first_name' => 'Trung',
 		'permissions' => [
 			'admin' => true
 		]

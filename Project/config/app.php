@@ -151,6 +151,7 @@ return [
          * Package Service Providers...
          */
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
+        Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
 
         /*
@@ -215,6 +216,7 @@ return [
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
 
     ],
 

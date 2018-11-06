@@ -549,6 +549,43 @@ textarea.fullinput {
 	border-color: #ffd196;
 }
 
+/* Trịnh Quang Trung 
+	************************************************************************** */
+td.title {
+	color: #ffffff;
+	font-weight: bold;
+	background-color: #386dbb;
+}
+
+td.title a {
+	color: #ffffff;
+}
+
+tr {
+	font-size: 15px;
+	text-align: center;
+	border: 1px solid #00ccff;
+}
+
+td {
+	border: 1px solid #00ccff; 
+}
+
+.cls {
+	clear:both;
+}
+
+button[type="button"] {
+	float: left;
+	border: none !important;
+	font-weight: bold;
+	color: #fff;
+	padding: 6px 14px;
+	background: #006699;
+	margin-left: 5px;
+}
+
+
 /* ==|== Primary Styles ends here
 	========================================================================== */
 @media only screen and (min-width: 35em) {
