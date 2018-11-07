@@ -43,10 +43,10 @@
   	<script  type='text/javascript'>
   		function loadForm(id_form) {
 	  		$idForm = $('#'+id_form);
-	  		if($idForm.is(':hidden')) {
+	  		if ($idForm.is(':hidden')) {
 	  			$idForm.fadeIn('fast');
 	  		} else {
-	  			if(id_form != 'edit_scho') {
+	  			if (id_form != 'edit_scho') {
 	  				$idForm.fadeOut('fast');	
 	  			}
 	  		}
@@ -56,6 +56,44 @@
   			$('input[type=text], input[type=hidden]').val('');
   			$('form').hide();
   		}
+
+  		$(document).ready(function() {
+  			$('#add_scho').on('submit', function(e) {
+  				e.preventDefault();
+  				$schoYear = $('#add_scho_year').val().trim();
+  				if ($schoYear == '') {
+  					alert('Vui lòng nhập năm cho năm học.');
+  				} else {
+              var rules = /^[0-9]{4}$/;
+              if (rules.test($schoYear)) {
+                $url = $('#add_scho').attr('action');
+                $.ajax({
+                  'url': $url,
+                  'type': 'post',
+                  'data': {'schoYear': $schoYear, '_token': '{{ csrf_token() }}'},
+                  'async': true,
+                  'success': function(data) {
+                    if (typeof(data) == "object") {
+                      alert(data.mess);
+                    } else {
+                      alert('Thêm năm học thành công.');
+                      $('#scho_list').append(data);
+                      clearForm();
+                    }
+                  }
+                });
+              } else {
+                alert('Năm học nhập vào phải toàn là số và có độ dài là 4.');
+              }
+            }
+  			});
+
+        $('#edit_scho').on('submit', function(e) {
+          e.preventDefault();
+          var schoYear = $('#edit_scho_year').val().trim();
+          if (schoYear)
+        });
+  		});
 
   		function editScho(id, year) {
   			$('#edit_scho_id').val(id);
@@ -69,9 +107,9 @@
   		}
 
   		function deleteScho(id) {
-  			if(confirm('Bạn có chắc, muốn xóa năm học này.')) {
-  				$.get('{{ url("scholastic/delete") }}/'+id, function(data){
-  					if(typeof data == 'object') {
+  			if (confirm('Bạn có chắc, muốn xóa năm học này.')) {
+  				$.get('{{ url("scholastic/delete") }}/'+id, function(data) {
+  					if (typeof data == 'object') {
   						alert(data.mess);
   						$('tr#scho_'+id).remove();
   					}

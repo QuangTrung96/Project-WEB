@@ -629,9 +629,6 @@ button[type="button"] {
 	h2, h3 { page-break-after: avoid; }
 }
 
-.clear {
-	clear: both;
-}
 .qinfo {
 	color: #bbb;
 }

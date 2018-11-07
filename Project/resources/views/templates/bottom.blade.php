@@ -9,7 +9,7 @@
 			<li><a href="">LIÊN KẾT WEB</a></li>
 		</ul>
 	</div>
-	<div class="clear"></div>
+	<div class="cls"></div>
 	<div class="footer_menu">
 		<ul>
 			<li><a href="">TRANG CHỦ |</a></li>
@@ -22,7 +22,7 @@
 			<li><a href="">HỌC SINH - SINH VIÊN |</a></li>
 			<li><a href="">SƠ ĐỒ WEBSITE</a></li>
 		</ul>
-		<div class="clear"></div>
+		<div class="cls"></div>
 		<div id="footer_addr_block">
 			<p>
 				334 NGUYỄN TRÃI - THANH XUÂN - HÀ NỘI - VIỆT NAM
