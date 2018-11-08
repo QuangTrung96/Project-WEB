@@ -46,6 +46,9 @@ Route::group(['prefix' => 'scholastic', 'middleware' => 'check_access:admin'], f
 	           ->name('scholastic_add_post');
 	Route::post('edit', 'ScholasticController@postEdit')
 	           ->name('scholastic_edit_post');
+	Route::get('delete/{id}', 'ScholasticController@getDelete')
+	          ->name('scholastic_delete_get')
+	          ->where(['id' => '[0-9]+']);
 });
 	          
 Route::get('create_user', function() {

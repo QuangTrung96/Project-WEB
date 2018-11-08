@@ -39,7 +39,41 @@ class ScholasticController extends Controller
     	return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này.');
     }
 
-    public function postEdit() {
-        die('123');
+    public function postEdit(Request $request) 
+    {
+        if ($request->ajax()) {
+            $schoID = $request->get('schoID');
+            $schoYear = $request->get('schoYear');
+            $checkScho = Scholastic::where('year', $schoYear)
+                                   ->where('id', '!=', $schoID)
+                                   ->first();
+            if ($checkScho) {
+                return response()->json(['status' => 'error', 'mess' => 'Năm học này đã tồn tại']);
+            }
+
+            $scholastic = Scholastic::findOrFail($schoID);
+            $scholastic->year = $schoYear;
+            $scholastic->save();
+
+            $str = "<td class='wredy'>$scholastic->year</td>";
+            $str .= "<td class='wredy'><a href='javascript:void(0)' onclick='editScho($scholastic->id, \"$scholastic->year\")'>Sửa</a></td>";
+            $str .= "<td class='wredy'><a href='javascript:void(0)' onclick='deleteScho($scholastic->id)'>Xóa</a></td>";
+
+            return $str;
+        }
+
+        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này');
+    }
+
+    public function getDelete($id, Request $request) 
+    {
+        if ($request->ajax()) {
+            $scholastic = Scholastic::findOrFail($id);
+            $scholastic->delete();
+            return response()->json(['status' => 'success', 'mess' => 'Xóa năm học thành công']);
+        }
+        
+        return redirect()->route('index')
+               ->with('error', 'Bạn không thể thực hiện hành động này.');
     }
 }

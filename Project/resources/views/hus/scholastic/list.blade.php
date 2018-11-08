@@ -90,8 +90,33 @@
 
         $('#edit_scho').on('submit', function(e) {
           e.preventDefault();
-          var schoYear = $('#edit_scho_year').val().trim();
-          if (schoYear)
+          $schoYear = $('#edit_scho_year').val().trim();
+          if ($schoYear == '') {
+            alert('Vui lòng nhập năm cho năm học.');
+          } else {
+            var rules = /^[0-9]{4}$/;
+            if (rules.test($schoYear)) { 
+              $url = $('#edit_scho').attr('action');
+              $schoID = $('#edit_scho_id').val();
+              $.ajax({
+                'url': '{{ route('scholastic_edit_post') }}',
+                'type': 'post',
+                'data': {'schoID': $schoID, 'schoYear': $schoYear, '_token': '{{ csrf_token() }}'},
+                'async': true,
+                'success': function(data) {
+                  if (typeof data == 'object') {
+                    alert(data.mess);
+                  } else {
+                    alert('Sửa năm học thành công.');
+                    clearForm();
+                    $('tr#scho_'+$schoID).html(data);
+                  }
+                }
+              });
+            } else {
+              alert('Năm học nhập vào phải toàn là số và có độ dài là 4.');
+            }
+          }
         });
   		});
 
