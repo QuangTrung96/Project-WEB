@@ -23,113 +23,114 @@
 	</table>
 	{{ Form::open(['method' => 'POST', 'route' => 'semester_add_post', 'id' => 'add_seme', 'role'=>'form', 'style' => 'display:none']) }}
 	<p class='minihead'>Tên học kỳ:</p>
-	{{ Form::text('add_cate_title', '', ['id' => 'add_cate_title']) }}
+	{{ Form::text('add_seme_semester_name', '', ['id' => 'add_seme_semester_name']) }}
 	<p class='minihead'></p>
-	{{ Form::submit(__('category.Add category')) }}
+	{{ Form::submit('Thêm học kỳ') }}
 	{{ Form::close() }}
 
 	<div class="cls"></div>
 
-	{{ Form::open(['method' => 'POST', 'route' => 'category_edit_post', 'id' => 'edit_cate', 'role'=>'form', 'style' => 'display:none']) }}
-	{{ Form::hidden('edit_cate_id', '', ['id' => 'edit_cate_id']) }}
-	<p class='minihead'>{{ __('category.Category name') }}:</p>
-	{{ Form::text('edit_cate_title', '', ['id' => 'edit_cate_title']) }}
+	{{ Form::open(['method' => 'POST', 'route' => 'semester_edit_post', 'id' => 'edit_seme', 'role'=>'form', 'style' => 'display:none']) }}
+	{{ Form::hidden('edit_seme_id', '', ['id' => 'edit_seme_id']) }}
+	<p class='minihead'>Tên học kỳ:</p>
+	{{ Form::text('edit_seme_semester_name', '', ['id' => 'edit_seme_semester_name']) }}
 	<p class='minihead'></p>
-	{{ Form::submit(__('category.Edit category')) }}
-	{{ Form::button(__('category.Cancel'), ['onclick' => 'hideForm("edit_cate")']) }}
+	{{ Form::submit('Sửa học kỳ') }}
+	{{ Form::button('Thoát', ['onclick' => 'hideForm("edit_seme")']) }}
 	{{ Form::close() }}
 @endsection
 @section('code_js')
-  	<script  type='text/javascript'>
-  		function loadForm(id_form) {
-	  		$idForm = $('#'+id_form);
-	  		if($idForm.is(':hidden')) {
-	  			$idForm.fadeIn('fast');
-	  		} else {
-	  			if(id_form != 'edit_cate') {
-	  				$idForm.fadeOut('fast');	
-	  			}
-	  		}
-  		}
+    <script  type='text/javascript'>
+      function loadForm(id_form) {
+        $idForm = $('#'+id_form);
+        if ($idForm.is(':hidden')) {
+          $idForm.fadeIn('fast');
+        } else {
+          if (id_form != 'edit_seme') {
+            $idForm.fadeOut('fast');  
+          }
+        }
+      }
 
-  		function clearForm() {
-  			$('input[type=text], input[type=hidden]').val('');
-  			$('form').hide();
-  		}
+      function clearForm() {
+        $('input[type=text], input[type=hidden]').val('');
+        $('form').hide();
+      }
 
-  		$(document).ready(function() {
-  			$('#add_cate').on('submit', function(e) {
-  				e.preventDefault();
-  				$cateName = $('#add_cate_title').val();
-  				if($cateName == '') {
-  					alert('Vui lòng nhập tên cho chuyên mục.');
-  				} else {
-  					$url = $('#add_cate').attr('action');
-  					$.ajax({
-  						'url': $url,
-  						'type': 'post',
-  						'data': {'cateName': $cateName, '_token': '{{ csrf_token() }}'},
-  						'async': true,
-  						'success': function(data) {
-  							if(typeof(data) == "object") {
-  								alert(data.mess);
-  							} else {
-  								alert('Thêm chuyên mục thành công.');
-  								$('#cate_list').append(data);
-  								clearForm();
-  							}
-  						}
-  					})
-  				}
-  			});
+      $(document).ready(function() {
+        $('#add_seme').on('submit', function(e) {
+          e.preventDefault();
+          $semesterName = $('#add_seme_semester_name').val().trim();
+          if ($semesterName == '') {
+            alert('Vui lòng nhập tên cho học kỳ.');
+          } else {
+              $url = $('#add_seme').attr('action');
+              $.ajax({
+                'url': $url,
+                'type': 'post',
+                'data': {'semesterName': $semesterName, '_token': '{{ csrf_token() }}'},
+                'async': true,
+                'success': function(data) {
+                  if (typeof(data) == "object") {
+                    alert(data.mess);
+                  } else {
+                    alert('Thêm học kỳ thành công.');
+                    $('#seme_list').append(data);
+                    clearForm();
+                  }
+                }
+              }); 
+            }
+        });
 
-  			$('#edit_cate').on('submit', function(e) {
-  				e.preventDefault();
-  				$cateName = $('#edit_cate_title').val();
-  				if($cateName == '') {
-  					alert('Vui lòng nhập tên cho chuyên mục.');
-  				} else {
-  					$url = $('#edit_cate').attr('action');
-  					$cateID = $('#edit_cate_id').val();
-  					$.ajax({
-  						'url': '{{ route('category_edit_post') }}',
-  						'type': 'post',
-  						'data': {'cateID': $cateID, 'cateName': $cateName, '_token': '{{ csrf_token() }}'},
-  						'async': true,
-  						'success': function(data) {
-  							if(typeof data == 'object') {
-  								alert(data.mess);
-  							} else {
-  								alert('Sửa chuyên mục thành công.');
-  								clearForm();
-  								$('tr#cate_'+$cateID).html(data);
-  							}
-  						}
-  					})
-  				}
-  			});
-  		});
+        $('#edit_seme').on('submit', function(e) {
+          e.preventDefault();
+          $semesterName = $('#edit_seme_semester_name').val().trim();
+          if ($semesterName == '') {
+            alert('Vui lòng nhập tên cho học kỳ.');
+          } else {
+            $url = $('#edit_seme').attr('action');
+            $semeID = $('#edit_seme_id').val();
+            $.ajax({
+              'url': '{{ route('semester_edit_post') }}',
+              'type': 'post',
+              'data': {'semeID': $semeID, 'semesterName': $semesterName, '_token': '{{ csrf_token() }}'},
+              'async': true,
+              'success': function(data) {
+                if (typeof data == 'object') {
+                  alert(data.mess);
+                } else {
+                  alert('Sửa học kỳ thành công.');
+                  clearForm();
+                  $('tr#seme_'+$semeID).html(data);
+                }
+              }
+            });
+          }
+        });
+      });
 
-  		function editCate(id, title) {
-  			$('#edit_cate_id').val(id);
-  			$('#edit_cate_title').val(title);
-  			loadForm('edit_cate');
-  		}
+      function editSeme(id, semesterName) {
+        $('#edit_seme_id').val(id);
+        $('#edit_seme_semester_name').val(semesterName);
+        loadForm('edit_seme');
+      }
 
-  		function hideForm(id_form) {
-  			$('#'+id_form).hide();
-  			return false;
-  		}
+      function hideForm(id_form) {
+        $('#'+id_form).hide();
+        return false;
+      }
 
-  		function deleteCate(id) {
-  			if(confirm('Bạn có chắc, muốn xóa chuyên mục này.')) {
-  				$.get('{{ url("category/delete") }}/'+id, function(data){
-  					if(typeof data == 'object') {
-  						alert(data.mess);
-  						$('tr#cate_'+id).remove();
-  					}
-  				});
-  			}
-  		}
-	</script>
+      function deleteScho(id) {
+        if (confirm('Bạn có chắc, muốn xóa học kỳ này.')) {
+          $.get('{{ url("semester/delete") }}/'+id, function(data) {
+            if (typeof data == 'object') {
+              alert(data.mess);
+              $('tr#scho_'+id).remove();
+            }
+          });
+        }
+      }
+    </script>
 @endsection
+
