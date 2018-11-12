@@ -69,11 +69,16 @@ class ScholasticController extends Controller
     {
         if ($request->ajax()) {
             $scholastic = Scholastic::findOrFail($id);
-            $scholastic->delete();
-            return response()->json(['status' => 'success', 'mess' => 'Xóa năm học thành công']);
+            if ($scholastic->semester->count() == 0) {
+                $scholastic->delete();
+                return response()->json(['status' => 'success', 'mess' => 'Xóa năm học thành công']);
+            }
+            
+            return redirect()->route('index')
+                             ->with('error', 'Không thể xóa năm học này.');
         }
         
         return redirect()->route('index')
-               ->with('error', 'Bạn không thể thực hiện hành động này.');
+                         ->with('error', 'Bạn không thể thực hiện hành động này.');
     }
 }
