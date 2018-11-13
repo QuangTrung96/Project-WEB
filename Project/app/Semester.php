@@ -13,4 +13,9 @@ class Semester extends Model
     {
     	return $this->belongsTo('App\Scholastic', 'scholastic_id');
     }
+
+    public function subject()
+    {
+    	return $this->hasMany('App\Subject', 'semester_id');
+    }
 }

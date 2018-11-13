@@ -81,7 +81,7 @@ class SemesterController extends Controller
             return $str;
         }
 
-        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này');
+        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này.');
     }
 
     public function getDelete($id, Request $request) 
@@ -89,10 +89,10 @@ class SemesterController extends Controller
         if ($request->ajax()) {
             $semester = Semester::findOrFail($id);
             $semester->delete();
-            return response()->json(['status' => 'success', 'mess' => 'Xóa học kỳ thành công']);
+            return response()->json(['status' => 'success', 'mess' => 'Xóa học kỳ thành công.']);
         }
         
         return redirect()->route('index')
-               ->with('error', 'Bạn không thể thực hiện hành động này.');
+                         ->with('error', 'Bạn không thể thực hiện hành động này.');
     }
 }

@@ -63,6 +63,19 @@ Route::group(['prefix' => 'semester', 'middleware' => 'check_access:admin'], fun
 	          ->name('semester_delete_get')
 	          ->where(['id' => '[0-9]+']);
 });
+
+// Subject
+Route::group(['prefix' => 'subject', 'middleware' => 'check_access:admin'], function() {
+	Route::get('list', 'SubjectController@getList')
+	          ->name('subject_list_get');
+	Route::post('add', 'SubjectController@postAdd')
+	           ->name('subject_add_post');
+	Route::post('edit', 'SubjectController@postEdit')
+	           ->name('subject_edit_post');
+	Route::get('delete/{id}', 'SubjectController@getDelete')
+	          ->name('subject_delete_get')
+	          ->where(['id' => '[0-9]+']);
+});
 	          
 Route::get('create_user', function() {
 	$user = Sentinel::getUserRepository()->create([

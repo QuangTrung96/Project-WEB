@@ -27,7 +27,7 @@ class ScholasticController extends Controller
     		$scholastic->year = $schoYear;
     		$scholastic->save();
 
-    		$str = "<tr id='scho_" . $scholastic->id . "'>";
+    		$str  = "<tr id='scho_" . $scholastic->id . "'>";
     		$str .=		"<td class='wredy'>$scholastic->year</td>";
     		$str .=		"<td class='wredy'><a href='javascript:void(0)' onclick='editScho($scholastic->id, \"$scholastic->year\")'>Sửa</a></td>";
     		$str .= 	"<td class='wredy'><a href='javascript:void(0)' onclick='deleteScho($scholastic->id)'>Xóa</a></td>";
@@ -48,21 +48,21 @@ class ScholasticController extends Controller
                                    ->where('id', '!=', $schoID)
                                    ->first();
             if ($checkScho) {
-                return response()->json(['status' => 'error', 'mess' => 'Năm học này đã tồn tại']);
+                return response()->json(['status' => 'error', 'mess' => 'Năm học này đã tồn tại.']);
             }
 
             $scholastic = Scholastic::findOrFail($schoID);
             $scholastic->year = $schoYear;
             $scholastic->save();
 
-            $str = "<td class='wredy'>$scholastic->year</td>";
+            $str  = "<td class='wredy'>$scholastic->year</td>";
             $str .= "<td class='wredy'><a href='javascript:void(0)' onclick='editScho($scholastic->id, \"$scholastic->year\")'>Sửa</a></td>";
             $str .= "<td class='wredy'><a href='javascript:void(0)' onclick='deleteScho($scholastic->id)'>Xóa</a></td>";
 
             return $str;
         }
 
-        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này');
+        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này.');
     }
 
     public function getDelete($id, Request $request) 
@@ -71,11 +71,10 @@ class ScholasticController extends Controller
             $scholastic = Scholastic::findOrFail($id);
             if ($scholastic->semester->count() == 0) {
                 $scholastic->delete();
-                return response()->json(['status' => 'success', 'mess' => 'Xóa năm học thành công']);
+                return response()->json(['status' => 'success', 'mess' => 'Xóa năm học thành công.']);
             }
             
-            return redirect()->route('index')
-                             ->with('error', 'Không thể xóa năm học này.');
+            return response()->json(['error' => 'success', 'mess' => 'Bạn không thể xóa năm học này.']);
         }
         
         return redirect()->route('index')

@@ -1,20 +1,28 @@
 @extends('master')
 @section('content')
 	<h1 id='replyh'>{{ $title }}</h1>
-	<table width='450' id='scho_list'>
+	<table width='450' id='subj_list'>
 		<tr>
-			<td class='title' colspan='3'>
-				<a href='javascript:void(0)' onclick='loadForm("add_scho")'>Thêm năm học</a>
+			<td class='title' colspan='7'>
+				<a href='javascript:void(0)' onclick='loadForm("add_subj")'>Thêm môn học</a>
 			</td>
 		</tr>
 		<tr>
-			<td class='title'>Năm học</td>
+			<td class='title'>Mã môn học</td>
+			<td class='title'>Tên môn học</td>
+			<td class='title'>Giảng viên</td>
+			<td class='title'>Số tín chỉ</td>
+			<td class='title'>Học kỳ</td>
 			<td class='title'>Sửa</td>
 			<td class='title'>Xóa</td>
 		</tr>
-		@forelse($scholastics as $scholastic)
+		@forelse($subjects as $subject)
 			<tr id='scho_{{ $scholastic->id }}'>
-				<td>{{ $scholastic->year }}</td>
+				<td>{{ $subject->subject_code }}</td>
+				<td>{{ $subject->subject_name }}</td>
+				<td>{{ $subject->subject_code }}</td>
+				<td>{{ $subject->number_of_credits }}</td>
+				
 				<td><a href='javascript:void(0)' onclick='editScho({{ $scholastic->id }}, "{{ $scholastic->year }}")'>Sửa</a></td>
 				<td><a href='javascript:void(0)' onclick='deleteScho({{ $scholastic->id }})'>Xóa</a></td>
 			</tr>
