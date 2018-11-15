@@ -11,7 +11,14 @@ class SemesterController extends Controller
     public function getList()
     {
     	$semesters = Semester::all();
-    	$scholastics = Scholastic::pluck('year', 'id');
+        $scholastics = [
+            '0' => '---'
+        ];
+
+        if (Scholastic::all()->count()) {
+            $scholastics = Scholastic::pluck('year', 'id');
+        }
+    	
     	return view('hus.semester.list', ['semesters' => $semesters,'scholastics' => $scholastics])->with('title', 'Quản lý học kỳ');
     }
 

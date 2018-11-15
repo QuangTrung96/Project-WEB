@@ -27,7 +27,7 @@
 	<p class='minihead'>Tên học kỳ:</p>
 	{{ Form::text('add_seme_semester_name', '', ['id' => 'add_seme_semester_name']) }}
   <p class="minihead">Năm học:</p>
-  {{ Form::select('scholastic', $scholastics, ['class' => 'scholastic']) }}
+  {{ Form::select('scholastic', $scholastics) }}
 	<p class='minihead'></p>
 	{{ Form::submit('Thêm học kỳ') }}
 	{{ Form::close() }}
@@ -67,27 +67,30 @@
         $('#add_seme').on('submit', function(e) {
           e.preventDefault();
           $semesterName = $('#add_seme_semester_name').val().trim();
+          $scholasticID = $('[name=scholastic]').val();
+
           if ($semesterName == '') {
             alert('Vui lòng nhập tên cho học kỳ.');
-          } else {
-              $scholasticID = $('[name=scholastic]').val();
-              $url = $('#add_seme').attr('action');
-              $.ajax({
-                'url': $url,
-                'type': 'post',
-                'data': {'semesterName': $semesterName, 'scholasticID': $scholasticID, '_token': '{{ csrf_token() }}'},
-                'async': true,
-                'success': function(data) {
-                  if (typeof(data) == "object") {
-                    alert(data.mess);
-                  } else {
-                    alert('Thêm học kỳ thành công.');
-                    $('#seme_list').append(data);
-                    clearForm();
+          } else if ($scholasticID == '0') { 
+              alert('Bạn phải thêm năm học trước đã.');
+            } else {
+                $url = $('#add_seme').attr('action');
+                $.ajax({
+                  'url': $url,
+                  'type': 'post',
+                  'data': {'semesterName': $semesterName, 'scholasticID': $scholasticID, '_token': '{{ csrf_token() }}'},
+                  'async': true,
+                  'success': function(data) {
+                    if (typeof(data) == "object") {
+                      alert(data.mess);
+                    } else {
+                      alert('Thêm học kỳ thành công.');
+                      $('#seme_list').append(data);
+                      clearForm();
+                    }
                   }
-                }
-              }); 
-            }
+                }); 
+              }
         });
 
         $('#edit_seme').on('submit', function(e) {

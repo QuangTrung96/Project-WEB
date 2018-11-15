@@ -19,7 +19,7 @@
 
 		<div class="centerfix" id="header">
 			<div class="centercontent">
-				<a href="#"><img src="{{ asset('public/bluesky/img/header/logo.png') }}" /></a>
+				<a href="{{ route('index') }}"><img src="{{ asset('public/bluesky/img/header/logo.png') }}" /></a>
 				<img src="{{ asset('public/bluesky/img/header/bannertxt_vi.png') }}" />
 				<img src="{{ asset('public/bluesky/img/header/medals.png') }}" />
 			</div>
