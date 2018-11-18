@@ -28,7 +28,7 @@
 				<td>{{ $subject->semester->semester_name }}</td>
 				<td>
           <a href='javascript:void(0)' onclick='editSubj(
-          {{ $subject->id }}, "{{ $subject->subject_code }}", "{{ $subject->subject_name }}", "{{ $full_name }}", {{ $subject->number_of_credits }}, "{{ $subject->semester->semester_name }}"
+          {{ $subject->id }}, "{{ $subject->subject_code }}", "{{ $subject->subject_name }}", {{ $subject->user_id }}, {{ $subject->number_of_credits }}, {{ $subject->semester_id }}
           )'>Sửa</a>
         </td>
 				<td><a href='javascript:void(0)' onclick='deleteSubj({{ $subject->id }})'>Xóa</a></td>
@@ -36,6 +36,9 @@
 		@empty
 		@endforelse
 	</table>
+  <div class="cls"></div>
+  {{ $subjects->links() }} 
+
 	{{ Form::open(['method' => 'POST', 'route' => 'subject_add_post', 'id' => 'add_subj', 'role'=>'form', 'style' => 'display:none']) }}
 	<p class='minihead'>Mã môn học:</p>
 	{{ Form::text('add_subj_subject_code', '', ['id' => 'add_subj_subject_code']) }}
@@ -51,7 +54,7 @@
 	{{ Form::submit('Thêm môn học') }}
 	{{ Form::close() }} 
 
-	<div class="cls"></div>
+	<div class="cls">&nbsp;</div>
 
 	{{ Form::open(['method' => 'POST', 'route' => 'subject_edit_post', 'id' => 'edit_subj', 'role'=>'form', 'style' => 'display:none']) }}
 	{{ Form::hidden('edit_subj_id', '', ['id' => 'edit_subj_id']) }}
@@ -60,11 +63,11 @@
   <p class='minihead'>Tên môn học:</p>
   {{ Form::text('edit_subj_subject_name', '', ['id' => 'edit_subj_subject_name']) }}
   <p class='minihead'>Tên giảng viên:</p>
-  {{ Form::select('user', $users) }}
+  {{ Form::select('user_select', $users) }}
   <p class='minihead'>Số tín chỉ:</p>
-  {{ Form::select('credit', $credits) }}
+  {{ Form::select('credit_select', $credits) }}
   <p class='minihead'>Tên học kỳ:</p>
-  {{ Form::select('semester', $semesters) }}
+  {{ Form::select('semester_select', $semesters) }}
   <p class='minihead'></p>
   {{ Form::submit('Sửa') }}
 	{{ Form::button('Thoát', ['onclick' => 'hideForm("edit_subj")']) }}
@@ -74,13 +77,18 @@
   	<script  type='text/javascript'>
   		function loadForm(id_form) {
 	  		$idForm = $('#'+id_form);
-	  		if ($idForm.is(':hidden')) {
-	  			$idForm.fadeIn('fast');
-	  		} else {
-	  			if (id_form != 'edit_subj') {
-	  				$idForm.fadeOut('fast');	
-	  			}
-	  		}
+
+        if ($idForm.is(':hidden')) {
+          if (id_form == 'edit_subj') {
+            $('#add_subj').fadeOut('fast');  
+            $idForm.fadeIn('fast');
+          } else {
+            $('#edit_subj').fadeOut('fast');  
+            $idForm.fadeIn('fast');
+          }    
+        } else {
+          $idForm.fadeOut('fast');  
+        }
   		}
 
   		function clearForm() {
@@ -93,7 +101,6 @@
   				e.preventDefault();
           $subjectCode = $('#add_subj_subject_code').val().trim();
   				$subjectName = $('#add_subj_subject_name').val().trim();
-          $numberOfCredits = $('[name=credit]').val();
           $semesterID = $('[name=semester]').val();
 
           if ($subjectCode == '') {
@@ -104,6 +111,7 @@
             alert('Bạn phải thêm học kỳ trước đã.');
           } else {
             $userID = $('[name=user]').val();
+            $numberOfCredits = $('[name=credit]').val();
             $url = $('#add_subj').attr('action');
             $.ajax({
               'url': $url,
@@ -121,7 +129,7 @@
                   alert(data.mess);
                 } else {
                   alert('Thêm môn học thành công.');
-                  $('#scho_list').append(data);
+                  $('#subj_list').append(data);
                   clearForm();
                 }
               }
@@ -129,42 +137,55 @@
           }
   			});
 
-        $('#edit_scho').on('submit', function(e) {
+        $('#edit_subj').on('submit', function(e) {
           e.preventDefault();
-          $schoYear = $('#edit_scho_year').val().trim();
-          if ($schoYear == '') {
-            alert('Vui lòng nhập năm cho năm học.');
+          $subjectCode = $('#edit_subj_subject_code').val().trim();
+          $subjectName = $('#edit_subj_subject_name').val().trim();
+          
+          if ($subjectCode == '') {
+            alert('Vui lòng nhập mã môn học.');
+          } else if ($subjectName == '') {
+            alert('Vui lòng nhập tên môn học.');
           } else {
-            var rules = /^[0-9]{4}$/;
-            if (rules.test($schoYear)) { 
-              $url = $('#edit_scho').attr('action');
-              $schoID = $('#edit_scho_id').val();
-              $.ajax({
-                'url': '{{ route('scholastic_edit_post') }}',
-                'type': 'post',
-                'data': {'schoID': $schoID, 'schoYear': $schoYear, '_token': '{{ csrf_token() }}'},
-                'async': true,
-                'success': function(data) {
-                  if (typeof data == 'object') {
-                    alert(data.mess);
-                  } else {
-                    alert('Sửa năm học thành công.');
-                    clearForm();
-                    $('tr#scho_'+$schoID).html(data);
-                  }
+            $subjID = $('#edit_subj_id').val();
+            $userID = $('[name=user_select]').val();
+            $numberOfCredits = $('[name=credit_select]').val();
+            $semesterID = $('[name=semester_select]').val();
+            $url = $('#edit_subj').attr('action');
+            $.ajax({
+              'url': $url,
+              'type': 'post',
+              'data': {
+                'subjID'         : $subjID,
+                'subjectCode'    : $subjectCode,
+                'subjectName'    : $subjectName,
+                'userID'         : $userID,
+                'numberOfCredits': $numberOfCredits,
+                'semesterID'     : $semesterID,
+                '_token'         : '{{ csrf_token() }}'},
+              'async': true,
+              'success': function(data) {
+                if (typeof data == 'object') {
+                  alert(data.mess);
+                } else {
+                  alert('Sửa môn học thành công.');
+                  clearForm();
+                  $('tr#subj_'+$subjID).html(data);
                 }
-              });
-            } else {
-              alert('Năm học nhập vào phải toàn là số và có độ dài là 4.');
-            }
+              }
+            });
           }
         });
   		});
 
-  		function editScho(id, year) {
-  			$('#edit_scho_id').val(id);
-  			$('#edit_scho_year').val(year);
-  			loadForm('edit_scho');
+  		function editSubj(id, subject_code, subject_name, user_id, credit, semester_id) {
+  			$('#edit_subj_id').val(id);
+        $('#edit_subj_subject_code').val(subject_code);
+  			$('#edit_subj_subject_name').val(subject_name);
+        $("select[name=user_select] option[value="+user_id+"]").attr("selected", "selected");
+        $("select[name=credit_select] option[value="+credit+"]").attr("selected", "selected");
+        $("select[name=semester_select] option[value="+semester_id+"]").attr("selected", "selected");
+        loadForm('edit_subj');
   		}
 
   		function hideForm(id_form) {
@@ -172,13 +193,15 @@
   			return false;
   		}
 
-  		function deleteScho(id) {
-  			if (confirm('Bạn có chắc, muốn xóa năm học này.')) {
-  				$.get('{{ url("scholastic/delete") }}/'+id, function(data) {
+  		function deleteSubj(id) {
+  			if (confirm('Bạn có chắc, muốn xóa môn học này.')) {
+  				$.get('{{ url("subject/delete") }}/'+id, function(data) {
   					if (typeof data == 'object') {
   						alert(data.mess);
               if (data.status == 'success') {
-                $('tr#scho_'+id).remove();
+                hideForm('add_subj');
+                hideForm('edit_subj');
+                $('tr#subj_'+id).remove();
               }
   					}
   				});

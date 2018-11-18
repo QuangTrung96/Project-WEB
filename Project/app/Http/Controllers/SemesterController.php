@@ -10,7 +10,7 @@ class SemesterController extends Controller
 {
     public function getList()
     {
-    	$semesters = Semester::all();
+    	$semesters = Semester::orderBy('scholastic_id', 'desc')->paginate(5);
         $scholastics = [
             '0' => '---'
         ];
@@ -19,13 +19,13 @@ class SemesterController extends Controller
             $scholastics = Scholastic::pluck('year', 'id');
         }
     	
-    	return view('hus.semester.list', ['semesters' => $semesters,'scholastics' => $scholastics])->with('title', 'Quản lý học kỳ');
+    	return view('hus.semester.list', ['semesters' => $semesters, 'scholastics' => $scholastics])->with('title', 'Quản lý học kỳ');
     }
 
     public function postAdd(Request $request)
     {
     	if ($request->ajax()) {
-    		$semesterName = $request->get('semesterName');
+    		$semesterName = strtoupper($request->get('semesterName'));
             $scholasticID = $request->get('scholasticID');
             $result = Semester::where('semester_name', $semesterName)
                               ->where('scholastic_id', $scholasticID)
@@ -60,7 +60,7 @@ class SemesterController extends Controller
     {
         if ($request->ajax()) {
             $semeID = $request->get('semeID');
-            $semesterName = $request->get('semesterName');
+            $semesterName = strtoupper($request->get('semesterName'));
             $scholasticID = $request->get('scholasticID');
 
             $result = Semester::where('semester_name', $semesterName)
@@ -95,8 +95,12 @@ class SemesterController extends Controller
     {
         if ($request->ajax()) {
             $semester = Semester::findOrFail($id);
-            $semester->delete();
-            return response()->json(['status' => 'success', 'mess' => 'Xóa học kỳ thành công.']);
+            if ($semester->subject->count() == 0) {
+                $semester->delete();
+                return response()->json(['status' => 'success', 'mess' => 'Xóa học kỳ thành công.']);
+            }
+
+            return response()->json(['status' => 'error', 'mess' => 'Bạn không thể xóa học kỳ này.']);  
         }
         
         return redirect()->route('index')

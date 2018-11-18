@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Scholastic;
+use Illuminate\Http\Request;
 
 class ScholasticController extends Controller
 {
     public function getList()
     {
-    	$scholastics = Scholastic::all();
+    	$scholastics = Scholastic::orderBy('year', 'desc')->paginate(5);
     	return view('hus.scholastic.list', ['scholastics' => $scholastics])->with('title', 'Quản lý năm học');
     }
 
@@ -74,7 +74,7 @@ class ScholasticController extends Controller
                 return response()->json(['status' => 'success', 'mess' => 'Xóa năm học thành công.']);
             }
             
-            return response()->json(['error' => 'success', 'mess' => 'Bạn không thể xóa năm học này.']);
+            return response()->json(['status' => 'error', 'mess' => 'Bạn không thể xóa năm học này.']);
         }
         
         return redirect()->route('index')
