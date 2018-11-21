@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Scholastic;
 use Illuminate\Http\Request;
 
 class ScholasticController extends Controller
 {
+    protected $currentYear;
+
+    public function __construct()
+    {
+        $this->currentYear = Carbon::now()->year;
+    }
+
     public function getList()
     {
     	$scholastics = Scholastic::orderBy('year', 'desc')->paginate(5);
@@ -17,6 +25,10 @@ class ScholasticController extends Controller
     {
     	if ($request->ajax()) {
     		$schoYear = $request->get('schoYear');
+            if ($schoYear < (($this->currentYear) - 5) || $schoYear > (($this->currentYear) + 5)) {
+                return response()->json(['status' => 'error', 'mess' => 'Năm nhập vào không phù hợp.']);
+            }
+
     		$year = Scholastic::where('year', $schoYear)->first();
 
     		if ($year) {
@@ -44,10 +56,15 @@ class ScholasticController extends Controller
         if ($request->ajax()) {
             $schoID = $request->get('schoID');
             $schoYear = $request->get('schoYear');
-            $checkScho = Scholastic::where('year', $schoYear)
+
+            if ($schoYear < (($this->currentYear) - 5) || $schoYear > (($this->currentYear) + 5)) {
+                return response()->json(['status' => 'error', 'mess' => 'Năm nhập vào không phù hợp.']);
+            }
+
+            $year = Scholastic::where('year', $schoYear)
                                    ->where('id', '!=', $schoID)
                                    ->first();
-            if ($checkScho) {
+            if ($year) {
                 return response()->json(['status' => 'error', 'mess' => 'Năm học này đã tồn tại.']);
             }
 

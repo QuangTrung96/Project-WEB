@@ -76,6 +76,19 @@ Route::group(['prefix' => 'subject', 'middleware' => 'check_access:admin'], func
 	          ->name('subject_delete_get')
 	          ->where(['id' => '[0-9]+']);
 });
+
+// Point
+Route::group(['prefix' => 'point', 'middleware' => 'check_access:admin'], function() {
+	Route::get('list', 'PointController@getList')
+	          ->name('point_list_get');
+	Route::post('add', 'PointController@postAdd')
+	           ->name('point_add_post');
+	Route::post('edit', 'PointController@postEdit')
+	           ->name('point_edit_post');
+	Route::get('delete/{id}', 'PointController@getDelete')
+	          ->name('point_delete_get')
+	          ->where(['id' => '[0-9]+']);
+});
 	          
 Route::get('create_user', function() {
 	$user = Sentinel::getUserRepository()->create([

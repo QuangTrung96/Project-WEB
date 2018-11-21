@@ -1,7 +1,7 @@
 @extends('master')
 @section('content')
 	<h1 id='replyh'>{{ $title }}</h1>
-  <div style="width: 456px">
+  <div style='width: 456px'>
     <table width='450' id='scho_list'>
       <tr>
         <td class='title' colspan='3'>
@@ -22,6 +22,7 @@
       @empty
       @endforelse
     </table>
+    <div id="modal" class="modal" style="display: none;"></div>
     <div class="cls"></div>
     {{ $scholastics->links() }}
 
@@ -62,6 +63,17 @@
   			$('form').hide();
   		}
 
+      var isShowingLoading = false;
+      function show_loading() {
+        isShowingLoading = true;
+        $('#modal').show();
+      }
+
+      function hide_loading() {
+        isShowingLoading = false;
+        $('#modal').hide();
+      }
+
   		$(document).ready(function() {
   			$('#add_scho').on('submit', function(e) {
   				e.preventDefault();
@@ -77,6 +89,13 @@
                   'type': 'post',
                   'data': {'schoYear': $schoYear, '_token': '{{ csrf_token() }}'},
                   'async': true,
+                  'timeout': 10000,
+                  'beforeSend' : function(xhr) {
+                    show_loading();
+                  },
+                  'complete': function(xhr) {
+                    hide_loading();
+                  },
                   'success': function(data) {
                     if (typeof(data) == "object") {
                       alert(data.mess);
@@ -85,6 +104,9 @@
                       $('#scho_list').append(data);
                       clearForm();
                     }
+                  },
+                  'error': function (e) {
+                    console.log(e);
                   }
                 });
               } else {
@@ -108,6 +130,13 @@
                 'type': 'post',
                 'data': {'schoID': $schoID, 'schoYear': $schoYear, '_token': '{{ csrf_token() }}'},
                 'async': true,
+                'timeout': 10000,
+                'beforeSend' : function(xhr) {
+                  show_loading();
+                },
+                'complete': function(xhr) {
+                  hide_loading();
+                },
                 'success': function(data) {
                   if (typeof data == 'object') {
                     alert(data.mess);
@@ -116,6 +145,9 @@
                     clearForm();
                     $('tr#scho_'+$schoID).html(data);
                   }
+                },
+                'error': function (e) {
+                  console.log(e);
                 }
               });
             } else {

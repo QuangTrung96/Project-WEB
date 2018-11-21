@@ -7,6 +7,7 @@
 				<a href='javascript:void(0)' onclick='loadForm("add_subj")'>Thêm môn học</a>
 			</td>
 		</tr>
+    <div id="modal" class="modal" style="display: none;"></div>
 		<tr>
 			<td class='title'>Mã môn học</td>
 			<td class='title'>Tên môn học</td>
@@ -96,6 +97,17 @@
   			$('form').hide();
   		}
 
+      var isShowingLoading = false;
+      function show_loading() {
+        isShowingLoading = true;
+        $('#modal').show();
+      }
+
+      function hide_loading() {
+        isShowingLoading = false;
+        $('#modal').hide();
+      }
+
   		$(document).ready(function() {
   			$('#add_subj').on('submit', function(e) {
   				e.preventDefault();
@@ -124,6 +136,13 @@
                 'semesterID'     : $semesterID,
                 '_token'         : '{{ csrf_token() }}'},
               'async': true,
+              'timeout': 10000,
+              'beforeSend' : function(xhr) {
+                show_loading();
+              },
+              'complete': function(xhr) {
+                hide_loading();
+              },
               'success': function(data) {
                 if (typeof(data) == "object") {
                   alert(data.mess);
@@ -132,6 +151,9 @@
                   $('#subj_list').append(data);
                   clearForm();
                 }
+              },
+              'error': function (e) {
+                console.log(e);
               }
             });
           }
@@ -164,6 +186,13 @@
                 'semesterID'     : $semesterID,
                 '_token'         : '{{ csrf_token() }}'},
               'async': true,
+              'timeout': 10000,
+              'beforeSend' : function(xhr) {
+                show_loading();
+              },
+              'complete': function(xhr) {
+                hide_loading();
+              },
               'success': function(data) {
                 if (typeof data == 'object') {
                   alert(data.mess);
@@ -172,6 +201,9 @@
                   clearForm();
                   $('tr#subj_'+$subjID).html(data);
                 }
+              },
+              'error': function (e) {
+                console.log(e);
               }
             });
           }

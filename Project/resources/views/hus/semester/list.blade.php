@@ -24,6 +24,7 @@
       @empty
       @endforelse
     </table>
+    <div id="modal" class="modal" style="display: none;"></div>
     <div class="cls"></div>
     {{ $semesters->links() }} 
 
@@ -68,6 +69,17 @@
         $('form').hide();
       }
 
+      var isShowingLoading = false;
+      function show_loading() {
+        isShowingLoading = true;
+        $('#modal').show();
+      }
+
+      function hide_loading() {
+        isShowingLoading = false;
+        $('#modal').hide();
+      }
+
       $(document).ready(function() {
         $('#add_seme').on('submit', function(e) {
           e.preventDefault();
@@ -85,6 +97,13 @@
                   'type': 'post',
                   'data': {'semesterName': $semesterName, 'scholasticID': $scholasticID, '_token': '{{ csrf_token() }}'},
                   'async': true,
+                  'timeout': 10000,
+                  'beforeSend' : function(xhr) {
+                    show_loading();
+                  },
+                  'complete': function(xhr) {
+                    hide_loading();
+                  },
                   'success': function(data) {
                     if (typeof(data) == "object") {
                       alert(data.mess);
@@ -93,6 +112,9 @@
                       $('#seme_list').append(data);
                       clearForm();
                     }
+                  },
+                  'error': function (e) {
+                    console.log(e);
                   }
                 }); 
               }
@@ -112,6 +134,13 @@
               'type': 'post',
               'data': {'semeID': $semeID, 'semesterName': $semesterName, 'scholasticID': $scholasticID , '_token': '{{ csrf_token() }}'},
               'async': true,
+              'timeout': 10000,
+              'beforeSend' : function(xhr) {
+                show_loading();
+              },
+              'complete': function(xhr) {
+                hide_loading();
+              },
               'success': function(data) {
                 if (typeof data == 'object') {
                   alert(data.mess);
@@ -120,6 +149,9 @@
                   clearForm();
                   $('tr#seme_'+$semeID).html(data);
                 }
+              },
+              'error': function (e) {
+                console.log(e);
               }
             });
           }
