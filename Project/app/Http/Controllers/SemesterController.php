@@ -34,7 +34,7 @@ class SemesterController extends Controller
     		if ($result) {
     			return response()->json([
                     'status' => 'error', 
-                    'mess' => $semesterName . ' năm ' . $result->scholastic->year . ' đã tồn tại.'
+                    'mess'   => $semesterName . ' năm ' . $result->scholastic->year . ' đã tồn tại !!!'
                 ]);
     		}
 
@@ -53,7 +53,7 @@ class SemesterController extends Controller
     		return $str;
     	}
 
-    	return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này.');
+    	return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này !!!');
     }
 
     public function postEdit(Request $request)
@@ -71,7 +71,7 @@ class SemesterController extends Controller
             if ($result) {
                 return response()->json([
                     'status' => 'error', 
-                    'mess' => $semesterName . ' năm ' . $result->scholastic->year . ' đã tồn tại.'
+                    'mess'   => $semesterName . ' năm ' . $result->scholastic->year . ' đã tồn tại !!!'
                 ]);
             }
 
@@ -88,7 +88,7 @@ class SemesterController extends Controller
             return $str;
         }
 
-        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này.');
+        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này !!!');
     }
 
     public function getDelete($id, Request $request) 
@@ -97,13 +97,19 @@ class SemesterController extends Controller
             $semester = Semester::findOrFail($id);
             if ($semester->subject->count() == 0) {
                 $semester->delete();
-                return response()->json(['status' => 'success', 'mess' => 'Xóa học kỳ thành công.']);
+                return response()->json([
+                    'status' => 'success',
+                    'mess'   => 'Xóa học kỳ thành công !!!'
+                ]);
             }
 
-            return response()->json(['status' => 'error', 'mess' => 'Bạn không thể xóa học kỳ này.']);  
+            return response()->json([
+                'status' => 'error',
+                'mess'   => 'Bạn không thể xóa học kỳ này !!!'
+            ]);  
         }
         
         return redirect()->route('index')
-                         ->with('error', 'Bạn không thể thực hiện hành động này.');
+                         ->with('error', 'Bạn không thể thực hiện hành động này !!!');
     }
 }

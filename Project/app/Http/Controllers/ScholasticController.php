@@ -26,13 +26,19 @@ class ScholasticController extends Controller
     	if ($request->ajax()) {
     		$schoYear = $request->get('schoYear');
             if ($schoYear < (($this->currentYear) - 5) || $schoYear > (($this->currentYear) + 5)) {
-                return response()->json(['status' => 'error', 'mess' => 'Năm nhập vào không phù hợp.']);
+                return response()->json([
+                    'status' => 'error',
+                    'mess'   => 'Năm học nhập vào không phù hợp !!!'
+                ]);
             }
 
     		$year = Scholastic::where('year', $schoYear)->first();
 
     		if ($year) {
-    			return response()->json(['status' => 'error', 'mess' => 'Năm học đã tồn tại.']);
+    			return response()->json([
+                    'status' => 'error',
+                    'mess'   => 'Năm học này đã tồn tại !!!'
+                ]);
     		}
 
     		$scholastic = new Scholastic();
@@ -48,7 +54,7 @@ class ScholasticController extends Controller
     		return $str;
     	}
 
-    	return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này.');
+    	return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này !!!');
     }
 
     public function postEdit(Request $request) 
@@ -58,14 +64,20 @@ class ScholasticController extends Controller
             $schoYear = $request->get('schoYear');
 
             if ($schoYear < (($this->currentYear) - 5) || $schoYear > (($this->currentYear) + 5)) {
-                return response()->json(['status' => 'error', 'mess' => 'Năm nhập vào không phù hợp.']);
+                return response()->json([
+                    'status' => 'error',
+                    'mess'   => 'Năm học nhập vào không phù hợp !!!'
+                ]);
             }
 
             $year = Scholastic::where('year', $schoYear)
-                                   ->where('id', '!=', $schoID)
-                                   ->first();
+                              ->where('id', '!=', $schoID)
+                              ->first();
             if ($year) {
-                return response()->json(['status' => 'error', 'mess' => 'Năm học này đã tồn tại.']);
+                return response()->json([
+                    'status' => 'error',
+                    'mess'   => 'Năm học này đã tồn tại !!!'
+                ]);
             }
 
             $scholastic = Scholastic::findOrFail($schoID);
@@ -79,7 +91,7 @@ class ScholasticController extends Controller
             return $str;
         }
 
-        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này.');
+        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này !!!');
     }
 
     public function getDelete($id, Request $request) 
@@ -88,13 +100,19 @@ class ScholasticController extends Controller
             $scholastic = Scholastic::findOrFail($id);
             if ($scholastic->semester->count() == 0) {
                 $scholastic->delete();
-                return response()->json(['status' => 'success', 'mess' => 'Xóa năm học thành công.']);
+                return response()->json([
+                    'status' => 'success', 
+                    'mess'   => 'Xóa năm học thành công !!!'
+                ]);
             }
             
-            return response()->json(['status' => 'error', 'mess' => 'Bạn không thể xóa năm học này.']);
+            return response()->json([
+                'status' => 'error',
+                'mess'   => 'Bạn không thể xóa năm học <u>' . $scholastic->year . '</u> này !!!'
+            ]);
         }
         
         return redirect()->route('index')
-                         ->with('error', 'Bạn không thể thực hiện hành động này.');
+                         ->with('error', 'Bạn không thể thực hiện hành động này !!!');
     }
 }

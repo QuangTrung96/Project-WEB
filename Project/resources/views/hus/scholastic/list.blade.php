@@ -3,6 +3,7 @@
 	<h1 id='replyh'>{{ $title }}</h1>
   <div style='width: 456px'>
     <table width='450' id='scho_list'>
+      <div id='form_mess' style='width: 450px'></div>
       <tr>
         <td class='title' colspan='3'>
           <a href='javascript:void(0)' onclick='loadForm("add_scho")'>Thêm năm học</a>
@@ -16,111 +17,135 @@
       @forelse($scholastics as $scholastic)
         <tr id='scho_{{ $scholastic->id }}'>
           <td>{{ $scholastic->year }}</td>
-          <td><a href='javascript:void(0)' onclick='editScho({{ $scholastic->id }}, "{{ $scholastic->year }}")'>Sửa</a></td>
-          <td><a href='javascript:void(0)' onclick='deleteScho({{ $scholastic->id }})'>Xóa</a></td>
+          <td>
+            <a href='javascript:void(0)' onclick='editScho({{ $scholastic->id }}, "{{ $scholastic->year }}")'>Sửa</a>
+          </td>
+          <td>
+            <a href='javascript:void(0)' onclick='deleteScho({{ $scholastic->id }})'>Xóa</a>
+          </td>
         </tr>
       @empty
       @endforelse
     </table>
-    <div id="modal" class="modal" style="display: none;"></div>
-    <div class="cls"></div>
+    <div id='modal' class='modal' style='display: none; width: 850px'></div>
+    <div class='cls'></div>
     {{ $scholastics->links() }}
 
     {{ Form::open(['method' => 'POST', 'route' => 'scholastic_add_post', 'id' => 'add_scho', 'role'=>'form', 'style' => 'display:none']) }}
-    <p class='minihead'>Năm học:</p>
-    {{ Form::text('add_scho_year', '', ['id' => 'add_scho_year']) }}
-    <p class='minihead'></p>
-    {{ Form::submit('Thêm năm') }}
+      <p class='minihead'>Năm học:</p>
+      {{ Form::text('add_scho_year', '', ['id' => 'add_scho_year']) }}
+      <p class='minihead'></p>
+      {{ Form::submit('Thêm năm') }}
     {{ Form::close() }} 
 
-    <div class="cls">&nbsp;</div>
+    <div class='cls'>&nbsp;</div>
 
     {{ Form::open(['method' => 'POST', 'route' => 'scholastic_edit_post', 'id' => 'edit_scho', 'role'=>'form', 'style' => 'display:none']) }}
-    {{ Form::hidden('edit_scho_id', '', ['id' => 'edit_scho_id']) }}
-    <p class='minihead'>Năm học:</p>
-    {{ Form::text('edit_scho_year', '', ['id' => 'edit_scho_year']) }}
-    <p class='minihead'></p>
-    {{ Form::submit('Sửa') }}
-    {{ Form::button('Thoát', ['onclick' => 'hideForm("edit_scho")']) }}
+      {{ Form::hidden('edit_scho_id', '', ['id' => 'edit_scho_id']) }}
+      <p class='minihead'>Năm học:</p>
+      {{ Form::text('edit_scho_year', '', ['id' => 'edit_scho_year']) }}
+      <p class='minihead'></p>
+      {{ Form::submit('Sửa') }}
+      {{ Form::button('Thoát', ['onclick' => 'hideForm("edit_scho")']) }}
     {{ Form::close() }}
   </div>
 @endsection
 @section('code_js')
-  	<script  type='text/javascript'>
-  		function loadForm(id_form) {
-	  		$idForm = $('#'+id_form);
-	  		if ($idForm.is(':hidden')) {
-	  			$idForm.fadeIn('fast');
-	  		} else {
-	  			if (id_form != 'edit_scho') {
-	  				$idForm.fadeOut('fast');	
-	  			}
-	  		}
-  		}
+	<script  type='text/javascript'>
+		function loadForm(id_form) {
+  		$idForm = $('#'+id_form);
+  		if ($idForm.is(':hidden')) {
+  			$idForm.fadeIn('fast');
+  		} else {
+    			if (id_form != 'edit_scho') {
+    				$idForm.fadeOut('fast');	
+    			}
+  		  }
+		}
 
-  		function clearForm() {
-  			$('input[type=text], input[type=hidden]').val('');
-  			$('form').hide();
-  		}
+		function clearForm() {
+			$('input[type=text], input[type=hidden]').val('');
+			$('form').hide();
+		}
 
-      var isShowingLoading = false;
-      function show_loading() {
-        isShowingLoading = true;
-        $('#modal').show();
-      }
+    var isShowingLoading = false;
+    function show_loading() {
+      isShowingLoading = true;
+      $('#modal').show();
+    }
 
-      function hide_loading() {
-        isShowingLoading = false;
-        $('#modal').hide();
-      }
+    function hide_loading() {
+      isShowingLoading = false;
+      $('#modal').hide();
+    }
 
-  		$(document).ready(function() {
-  			$('#add_scho').on('submit', function(e) {
-  				e.preventDefault();
-  				$schoYear = $('#add_scho_year').val().trim();
-  				if ($schoYear == '') {
-  					alert('Vui lòng nhập năm cho năm học.');
-  				} else {
-              var rules = /^[0-9]{4}$/;
-              if (rules.test($schoYear)) {
-                $url = $('#add_scho').attr('action');
-                $.ajax({
-                  'url': $url,
-                  'type': 'post',
-                  'data': {'schoYear': $schoYear, '_token': '{{ csrf_token() }}'},
-                  'async': true,
-                  'timeout': 10000,
-                  'beforeSend' : function(xhr) {
-                    show_loading();
-                  },
-                  'complete': function(xhr) {
-                    hide_loading();
-                  },
-                  'success': function(data) {
-                    if (typeof(data) == "object") {
-                      alert(data.mess);
-                    } else {
-                      alert('Thêm năm học thành công.');
+		$(document).ready(function() {
+			$('#add_scho').on('submit', function(e) {
+				e.preventDefault();
+				$schoYear = $('#add_scho_year').val().trim();
+				if ($schoYear == '') {
+          $('#form_mess').html('<ul><li>Vui lòng nhập năm học !!!</li></ul>')
+                         .removeClass('warningx wgreeny')
+                         .addClass('warningx wredy');
+				} else {
+            $('#form_mess').html('&nbsp;')
+                           .removeClass('warningx wredy');
+            var rules = /^[0-9]{4}$/;
+            if (rules.test($schoYear)) {
+              $url = $('#add_scho').attr('action');
+              $.ajax({
+                'url': $url,
+                'type': 'post',
+                'data': {
+                  'schoYear': $schoYear,
+                  '_token': '{{ csrf_token() }}'
+                },
+                'async': true,
+                'timeout': 10000,
+                'beforeSend' : function(xhr) {
+                  show_loading();
+                },
+                'complete': function(xhr) {
+                  hide_loading();
+                },
+                'success': function(data) {
+                  if (typeof(data) == 'object') {
+                    $('#form_mess').removeClass('warningx wgreeny')
+                                   .addClass('warningx wredy')
+                                   .html(function () {
+                                      var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                                      return $mess;
+                                    });
+                  } else {
+                      $('#form_mess').html('<ul><li>Thêm năm học thành công !!!</li></ul>')
+                                     .removeClass('warningx wredy')
+                                     .addClass('warningx wgreeny');
                       $('#scho_list').append(data);
                       clearForm();
                     }
-                  },
-                  'error': function (e) {
-                    console.log(e);
-                  }
-                });
-              } else {
-                alert('Năm học nhập vào phải toàn là số và có độ dài là 4.');
+                },
+                'error': function (e) {
+                  console.log(e);
+                }
+              });
+            } else {
+                $('#form_mess').html('<ul><li>Năm học nhập vào phải toàn là số và có độ dài là 4 !!!</li></ul>')
+                               .removeClass('warningx wgreeny')
+                               .addClass('warningx wredy');
               }
-            }
-  			});
+          }
+			});
 
-        $('#edit_scho').on('submit', function(e) {
-          e.preventDefault();
-          $schoYear = $('#edit_scho_year').val().trim();
-          if ($schoYear == '') {
-            alert('Vui lòng nhập năm cho năm học.');
-          } else {
+      $('#edit_scho').on('submit', function(e) {
+        e.preventDefault();
+        $schoYear = $('#edit_scho_year').val().trim();
+        if ($schoYear == '') {
+          $('#form_mess').html('<ul><li>Vui lòng nhập năm học !!!</li></ul>')
+                         .removeClass('warningx wgreeny')
+                         .addClass('warningx wredy');
+        } else {
+            $('#form_mess').html('&nbsp;')
+                           .removeClass('warningx wredy');
             var rules = /^[0-9]{4}$/;
             if (rules.test($schoYear)) { 
               $url = $('#edit_scho').attr('action');
@@ -128,7 +153,11 @@
               $.ajax({
                 'url': '{{ route('scholastic_edit_post') }}',
                 'type': 'post',
-                'data': {'schoID': $schoID, 'schoYear': $schoYear, '_token': '{{ csrf_token() }}'},
+                'data': {
+                  'schoID': $schoID,
+                  'schoYear': $schoYear,
+                  '_token': '{{ csrf_token() }}'
+                },
                 'async': true,
                 'timeout': 10000,
                 'beforeSend' : function(xhr) {
@@ -139,48 +168,69 @@
                 },
                 'success': function(data) {
                   if (typeof data == 'object') {
-                    alert(data.mess);
+                    $('#form_mess').removeClass('warningx wgreeny')
+                                   .addClass('warningx wredy')
+                                   .html(function () {
+                                      var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                                      return $mess;
+                                    });
                   } else {
-                    alert('Sửa năm học thành công.');
-                    clearForm();
-                    $('tr#scho_'+$schoID).html(data);
-                  }
+                      $('#form_mess').html('<ul><li>Sửa năm học thành công !!!</li></ul>')
+                                     .removeClass('warningx wredy')
+                                     .addClass('warningx wgreeny');
+                      clearForm();
+                      $('tr#scho_'+$schoID).html(data);
+                    }
                 },
                 'error': function (e) {
                   console.log(e);
                 }
               });
             } else {
-              alert('Năm học nhập vào phải toàn là số và có độ dài là 4.');
-            }
-          }
-        });
-  		});
-
-  		function editScho(id, year) {
-  			$('#edit_scho_id').val(id);
-  			$('#edit_scho_year').val(year);
-  			loadForm('edit_scho');
-  		}
-
-  		function hideForm(id_form) {
-  			$('#'+id_form).hide();
-  			return false;
-  		}
-
-  		function deleteScho(id) {
-  			if (confirm('Bạn có chắc, muốn xóa năm học này.')) {
-  				$.get('{{ url("scholastic/delete") }}/'+id, function(data) {
-  					if (typeof data == 'object') {
-  						alert(data.mess);
-              if (data.status == 'success') {
-                hideForm('add_scho');
-                hideForm('edit_scho');
-                $('tr#scho_'+id).remove();
+                $('#form_mess').html('<ul><li>Năm học nhập vào phải toàn là số và có độ dài là 4 !!!</li></ul>')
+                               .removeClass('warningx wgreeny')
+                               .addClass('warningx wredy');
               }
-  					}
-  				});
-  			}
-  		}
-  	</script>
+        }
+      });
+		});
+
+		function editScho(id, year) {
+			$('#edit_scho_id').val(id);
+			$('#edit_scho_year').val(year);
+			loadForm('edit_scho');
+		}
+
+		function hideForm(id_form) {
+			$('#'+id_form).hide();
+			return false;
+		}
+
+		function deleteScho(id) {
+			if (confirm('Bạn có chắc, muốn xóa năm học này ?')) {
+				$.get('{{ url("scholastic/delete") }}/'+id, function(data) {
+					if (typeof data == 'object') {
+            $('#form_mess').removeClass('warningx wgreeny')
+                           .addClass('warningx wredy')
+                           .html(function () {
+                              var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                              return $mess;
+                            });
+
+            if (data.status == 'success') {
+              $('#form_mess').removeClass('warningx wredy')
+                             .addClass('warningx wgreeny')
+                             .html(function () {
+                                var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                                return $mess;
+                              });
+              hideForm('add_scho');
+              hideForm('edit_scho');
+              $('tr#scho_'+id).remove();
+            }
+					}
+				});
+			}
+		}
+	</script>
 @endsection
