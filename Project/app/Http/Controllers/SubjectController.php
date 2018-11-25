@@ -59,7 +59,7 @@ class SubjectController extends Controller
             if ($result) {
                 return response()->json([
                     'status' => 'error', 
-                    'mess' => 'Môn học này đã tồn tại.'
+                    'mess'   => 'Môn học này đã tồn tại !!!'
                 ]);
             }
 
@@ -86,7 +86,7 @@ class SubjectController extends Controller
             return $str;
         }
 
-        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này.');
+        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này !!!');
     }
 
     public function postEdit(Request $request)
@@ -108,7 +108,7 @@ class SubjectController extends Controller
             if ($result) {
                 return response()->json([
                     'status' => 'error', 
-                    'mess' => 'Môn học này đã tồn tại.'
+                    'mess'   => 'Môn học này đã tồn tại !!!'
                 ]);
             }
 
@@ -133,7 +133,7 @@ class SubjectController extends Controller
             return $str;
         }
 
-        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này.');
+        return redirect()->route('index')->with('error', 'Bạn không thể thực hiện hành động này !!!');
     }
 
     public function getDelete($id, Request $request) 
@@ -142,10 +142,13 @@ class SubjectController extends Controller
             $subject = Subject::findOrFail($id);
             $subject->delete();
             
-            return response()->json(['status' => 'success', 'mess' => 'Xóa môn học thành công.']);
+            return response()->json([
+                'status' => 'success',
+                'mess'   => 'Xóa môn học thành công !!!'
+            ]);
         }
         
         return redirect()->route('index')
-                         ->with('error', 'Bạn không thể thực hiện hành động này.');
+                         ->with('error', 'Bạn không thể thực hiện hành động này !!!');
     }
 }
