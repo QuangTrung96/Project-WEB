@@ -48,9 +48,10 @@
 		@include('templates.bottom')
 
 		<script language="javascript" src="{{ asset('public/bluesky/js/libs.js') }}"></script>
-		<script language="javascript" src="{{ asset('public/bluesky/js/plugins.js') }}"></script>
 
 		@yield("code_js")
+		
+		@yield('body_scripts_bottom')
 
 	</body>
 </html>

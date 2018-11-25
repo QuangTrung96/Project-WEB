@@ -89,6 +89,12 @@ Route::group(['prefix' => 'point', 'middleware' => 'check_access:admin'], functi
 	          ->name('point_delete_get')
 	          ->where(['id' => '[0-9]+']);
 });
+
+// Student
+Route::group(['prefix' => 'student', 'middleware' => 'check_access:admin'], function() {
+	Route::get('list', 'StudentController@getList')
+	          ->name('student_list_get');
+});
 	          
 Route::get('create_user', function() {
 	$user = Sentinel::getUserRepository()->create([
