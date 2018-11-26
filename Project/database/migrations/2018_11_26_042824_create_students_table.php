@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePointsTable extends Migration
+class CreateStudentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreatePointsTable extends Migration
      */
     public function up()
     {
-        Schema::create('points', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('subject_code');
             $table->string('student_code');
-            $table->tinyInteger('point');
-            $table->date('exam_day');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->date('birthday');
+            $table->tinyInteger('gender');
+            $table->string('address');
+            $table->longText('attributes')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ class CreatePointsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('points');
+        Schema::dropIfExists('students');
     }
 }

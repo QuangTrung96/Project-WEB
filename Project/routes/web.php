@@ -40,6 +40,7 @@ Route::group(['prefix' => 'member'], function() {
 
 // Scholastic
 Route::group(['prefix' => 'scholastic', 'middleware' => 'check_access:admin'], function() {
+	Route::get('/', 'ScholasticController@getList');
 	Route::get('list', 'ScholasticController@getList')
 	          ->name('scholastic_list_get');
 	Route::post('add', 'ScholasticController@postAdd')
@@ -47,12 +48,13 @@ Route::group(['prefix' => 'scholastic', 'middleware' => 'check_access:admin'], f
 	Route::post('edit', 'ScholasticController@postEdit')
 	           ->name('scholastic_edit_post');
 	Route::get('delete/{id}', 'ScholasticController@getDelete')
-	          ->name('scholastic_delete_get')
-	          ->where(['id' => '[0-9]+']);
+	          ->where(['id' => '[0-9]+'])
+	          ->name('scholastic_delete_get');
 });
 
 // Semester
 Route::group(['prefix' => 'semester', 'middleware' => 'check_access:admin'], function() {
+	Route::get('/', 'SemesterController@getList');
 	Route::get('list', 'SemesterController@getList')
 	          ->name('semester_list_get');
 	Route::post('add', 'SemesterController@postAdd')
@@ -60,12 +62,13 @@ Route::group(['prefix' => 'semester', 'middleware' => 'check_access:admin'], fun
 	Route::post('edit', 'SemesterController@postEdit')
 	           ->name('semester_edit_post');
 	Route::get('delete/{id}', 'SemesterController@getDelete')
-	          ->name('semester_delete_get')
-	          ->where(['id' => '[0-9]+']);
+	          ->where(['id' => '[0-9]+'])
+	          ->name('semester_delete_get');
 });
 
 // Subject
 Route::group(['prefix' => 'subject', 'middleware' => 'check_access:admin'], function() {
+	Route::get('/', 'SubjectController@getList');
 	Route::get('list', 'SubjectController@getList')
 	          ->name('subject_list_get');
 	Route::post('add', 'SubjectController@postAdd')
@@ -73,12 +76,13 @@ Route::group(['prefix' => 'subject', 'middleware' => 'check_access:admin'], func
 	Route::post('edit', 'SubjectController@postEdit')
 	           ->name('subject_edit_post');
 	Route::get('delete/{id}', 'SubjectController@getDelete')
-	          ->name('subject_delete_get')
-	          ->where(['id' => '[0-9]+']);
+	          ->where(['id' => '[0-9]+'])
+	          ->name('subject_delete_get');
 });
 
 // Point
 Route::group(['prefix' => 'point', 'middleware' => 'check_access:admin'], function() {
+	Route::get('/', 'PointController@getList');
 	Route::get('list', 'PointController@getList')
 	          ->name('point_list_get');
 	Route::post('add', 'PointController@postAdd')
@@ -86,14 +90,27 @@ Route::group(['prefix' => 'point', 'middleware' => 'check_access:admin'], functi
 	Route::post('edit', 'PointController@postEdit')
 	           ->name('point_edit_post');
 	Route::get('delete/{id}', 'PointController@getDelete')
-	          ->name('point_delete_get')
-	          ->where(['id' => '[0-9]+']);
+	          ->where(['id' => '[0-9]+'])
+	          ->name('point_delete_get');
 });
 
 // Student
 Route::group(['prefix' => 'student', 'middleware' => 'check_access:admin'], function() {
-	Route::get('list', 'StudentController@getList')
-	          ->name('student_list_get');
+	Route::get('/', 'StudentController@index');
+	Route::get('index', 'StudentController@index')
+	          ->name('student.index');
+	Route::get('add', 'StudentController@create')
+	           ->name('student.create');
+	Route::post('add', 'StudentController@store')
+	           ->name('student.store');
+	Route::get('/edit/{id}', 'StudentController@show')
+	          ->where(['id' => '[0-9]+'])
+	          ->name('student.show');
+    Route::put('/edit/{id}', 'StudentController@update')
+              ->name('student.update');
+	Route::delete('delete/{id}', 'StudentController@delete')
+	             ->where(['id' => '[0-9]+'])
+	             ->name('student.delete');
 });
 	          
 Route::get('create_user', function() {

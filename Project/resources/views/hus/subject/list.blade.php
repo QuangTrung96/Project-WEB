@@ -38,6 +38,9 @@
         </td>
 			</tr>
 		@empty
+      <tr>
+        <td colspan="7">Không có dữ liệu nào</td>
+      </tr>
 		@endforelse
 	</table>
   <div class='cls'></div>

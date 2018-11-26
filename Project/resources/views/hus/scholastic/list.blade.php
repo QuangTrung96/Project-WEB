@@ -25,6 +25,9 @@
           </td>
         </tr>
       @empty
+        <tr>
+          <td colspan="3">Không có dữ liệu nào</td>
+        </tr>
       @endforelse
     </table>
     <div id='modal' class='modal' style='display: none; width: 850px'></div>
