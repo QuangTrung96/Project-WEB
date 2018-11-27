@@ -3,6 +3,27 @@
   #header {
     margin-bottom: 55px;
   }
+  .pagination li.active {
+    width: 12px;
+    padding: 0px 0px;
+    margin-left: 8px;
+    margin-right: 19px;
+  }
+  .pagination li.active span {
+    width: 12px;
+    height: 1.799rem;
+  }
+  .pagination li.disabled {
+    width: 12px;
+    padding: 0px 0px;
+    margin-left: 5px;
+    margin-right: 15px;
+  }
+  .pagination li.disabled span {
+    width: 12px;
+    height: 1.799rem;
+    padding-right: 12px;
+  }
 </style>
 <link href='{{ asset('public/css/bootstrap.min.css') }}' rel='stylesheet' />
 @section('content')
@@ -44,10 +65,21 @@
                       <td>Nữ</td>
                     @endif
                     <td>
-                      <a href="#"
-                        class="btn btn-primary">Sửa</a>
-                      <a href="#"
-                         class="btn btn-danger">Xóa</a>
+                      <a href="{{ route('student.show', ['id' => $student->id]) }}"
+                      class="btn btn-primary">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                      </a>
+                      <a href="{{ route('student.delete', ['id' => $student->id]) }}"
+                      class="btn btn-danger"
+                      onclick="event.preventDefault();
+                      window.confirm('Bạn đã chắc chắn xóa chưa ?') ?
+                      document.getElementById('student-delete-{{ $student->id }}').submit() :
+                      0;"><i class="glyphicon glyphicon-remove"></i></a>
+                      <form action="{{ route('student.delete', ['id' => $student->id]) }}"
+                        method="post" id="student-delete-{{ $student->id }}">
+                        {{ csrf_field() }}
+                        {{ method_field('delete') }}
+                      </form>
                     </td>
                   </tr>
                 @empty
@@ -57,6 +89,9 @@
                 @endforelse
               </tbody>
             </table>
+          </div>
+          <div class="text-center">
+            {{ $students->links() }}
           </div>
         </div>
       </div>

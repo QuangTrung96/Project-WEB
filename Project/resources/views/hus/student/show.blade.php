@@ -15,55 +15,56 @@
       <br />
       <div class="panel panel-default">
         <div class="panel-body">
-          <form action="{{ route('student.store') }}" method="POST">
+          <form action="{{ route('student.update', ['id' => $student->id]) }}" method="POST">
             {{ csrf_field() }}
+            {{ method_field('put') }}
             <div class="form-group {{ $errors->has('student_code') ? 'has-error' : '' }}">
               <label for="student_code">Mã sinh viên</label>
               <input type="text" class="form-control" id="student_code" name="student_code" placeholder="Mã sinh viên"
-                value="{{ old('student_code') }}">
+                value="{{ $student->student_code }}">
               <span class="help-block">{{ $errors->first('student_code') }}</span>
             </div>
 
             <div class="form-group {{ $errors->has('last_name') ? 'has-error' : '' }}">
               <label for="last_name">Họ đệm</label>
               <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Họ đệm"
-                value="{{ old('last_name') }}">
+                value="{{ $student->last_name }}">
               <span class="help-block">{{ $errors->first('last_name') }}</span>
             </div>
 
             <div class="form-group {{ $errors->has('first_name') ? 'has-error' : '' }}">
               <label for="first_name">Tên</label>
               <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Tên"
-                value="{{ old('first_name') }}">
+                value="{{ $student->first_name }}">
               <span class="help-block">{{ $errors->first('first_name') }}</span>
             </div>
 
             <div class="form-group {{ $errors->has('birthday') ? 'has-error' : '' }}">
               <label for="birthday">Ngày sinh</label>
               <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Ngày sinh"
-                value="{{ old('birthday') }}">
+                value="{{ $student->birthday }}">
               <span class="help-block">{{ $errors->first('birthday') }}</span>
             </div>
             
             <div class="form-group">
               <label for="gender">Giới tính</label>
               <select name="gender" id="gender" class="form-control">
-                  <option value="1">Nam</option>
-                  <option value="2">Nữ</option>
+                  <option value="1" {{ $student->gender === 1 ? 'seleted' : '' }}>Nam</option>
+                  <option value="2" {{ $student->gender === 2 ? 'seleted' : '' }}>Nữ</option>
               </select>
             </div>
             
             <div class="form-group {{ $errors->has('address') ? 'has-error' : '' }}">
               <label for="address">Địa chỉ</label>
               <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ"
-                value="{{ old('address') }}">
+                value="{{ $student->address }}">
               <span class="help-block">{{ $errors->first('address') }}</span>
             </div>
             
             <div class="form-group" id="qt-app">
               <qt-attributes></qt-attributes>
             </div>
-            <button type="submit" class="btn btn-success">Thêm sinh viên</button>
+            <button type="submit" class="btn btn-success">Sửa sinh viên</button>
           </form>
         </div>
       </div>
