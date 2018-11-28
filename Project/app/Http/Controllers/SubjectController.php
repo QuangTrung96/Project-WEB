@@ -64,8 +64,8 @@ class SubjectController extends Controller
             }
 
             $subject = new Subject();
-            $subject->subject_code      = strtoupper($subjectCode);
-            $subject->subject_name      = ucwords($subjectName);
+            $subject->subject_code      = mb_strtoupper($subjectCode, 'UTF-8');
+            $subject->subject_name      = mb_convert_case($subjectName, MB_CASE_TITLE, 'UTF-8');
             $subject->user_id           = $userID;
             $subject->number_of_credits = $numberOfCredits;
             $subject->semester_id       = $semesterID;
@@ -93,8 +93,8 @@ class SubjectController extends Controller
     {
         if ($request->ajax()) {
             $subjID          = $request->get('subjID');
-            $subjectCode     = strtoupper($request->get('subjectCode'));
-            $subjectName     = ucwords($request->get('subjectName'));
+            $subjectCode     = mb_strtoupper($request->get('subjectCode'), 'UTF-8');
+            $subjectName     = mb_convert_case($request->get('subjectName'), MB_CASE_TITLE, 'UTF-8');
             $userID          = $request->get('userID');
             $numberOfCredits = $request->get('numberOfCredits');
             $semesterID      = $request->get('semesterID');

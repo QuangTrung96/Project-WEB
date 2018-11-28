@@ -49,8 +49,8 @@
             <div class="form-group">
               <label for="gender">Giới tính</label>
               <select name="gender" id="gender" class="form-control">
-                  <option value="1" {{ $student->gender === 1 ? 'seleted' : '' }}>Nam</option>
-                  <option value="2" {{ $student->gender === 2 ? 'seleted' : '' }}>Nữ</option>
+                <option value="1" {{ $student->gender === 1 ? 'selected' : '' }}>Nam</option>
+                <option value="2" {{ $student->gender === 2 ? 'selected' : '' }}>Nữ</option>
               </select>
             </div>
             
@@ -74,40 +74,40 @@
 @section('body_scripts_bottom')
   <script src='{{ asset('public/js/bootstrap.min.js') }}'></script>
   <script type="text/javascript" src="{{ asset('public/js/vue.js') }}"></script>
-  <script type="text/x-template" id="qt-attributes-template">    
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Thuộc tính</th>
-            <th>Giá trị</th>
-          </tr>
-        </thead>
-        <br />
-        <tbody>
-          <tr v-for="(item, key) in attributes">
+  <script type="text/x-template" id="qt-attributes-template">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Thuộc tính</th>
+          <th>Giá trị</th>
+        </tr>
+      </thead>
+      <br />
+      <tbody>
+        <tr v-for="(item, key) in attributes">
             <td><input type="text" :name="'attributes['+ key +'][name]'" v-model="item.name" class="form-control" placeholder="Thuộc tính"></td>
             <td><input type="text" :name="'attributes['+ key +'][value]'" v-model="item.value" class="form-control" placeholder="Giá trị"></td>
             <td>
               <button type="button" v-if="key != 0" v-on:click="deleteAttribute(item)" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
               <button type="button" v-if="key == (attributes.length - 1)" v-on:click="addAttribute" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></button>
             </td>
-          </tr>
-        </tbody>
-      </table>
+        </tr>
+      </tbody>
+    </table>
   </script>
   <script type="text/javascript">
-    @php
-      $attributes = old('attributes') ? json_encode(old('attributes')) : null;
-    @endphp
     Vue.component('qt-attributes', {
       template: '#qt-attributes-template',
       data: function () {
-        var attributes = [
-          {name: '', value: ''}
-        ];
-        @if($attributes)
-          attributes = {!! $attributes !!};
+        var attributes = null;
+        @if($student->attributes)
+          attributes = {!! $student->attributes !!};
         @endif
+        if (attributes == null || attributes.length == 0) {
+          attributes = [
+            {name: '', value: ''}
+          ];
+        }
         return {
           attributes: attributes
         };

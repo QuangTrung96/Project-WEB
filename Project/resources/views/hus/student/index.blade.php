@@ -31,8 +31,17 @@
   <div class='row'>
     <div class='col-md-12'>
       <div>
-        <a href='{{ route('student.create') }}' class='btn btn-primary'>Thêm sinh viên</a>
+        <div style="float: left;">
+          <a href='{{ route('student.create') }}' class='btn btn-primary'>Thêm sinh viên</a>
+        </div>
+        <div class="search">
+          {!! Form::open(['method' => 'GET','route' => 'student.index']) !!}
+            <input type="text" name="keyword" placeholder="Type you word ..." @if(Request::has('keyword')) value="{{ Request::get('keyword') }}" @endif() />
+            <input type="submit" value="Search" />
+          {!! Form::close() !!}
+        </div>
       </div>
+      <div style="clear: both;"></div>
       <br />
       <div class='panel panel-default'>
         <div class='panel-heading text-center'>

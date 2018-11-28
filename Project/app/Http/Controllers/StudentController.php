@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Student;
 use Illuminate\Http\Request;
 use App\Http\Requests\Student\AddRequest;
+use App\Http\Requests\Student\EditRequest;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-    	$students = Student::paginate(3);
+        if($request->has('keyword')){
+            $keyword = $request->get('keyword');
+            $students = Student::where('student_code','like','%'. $keyword .'%')->paginate(3);
+        } else {
+            $students = Student::paginate(3);
+        }
+
     	return view('hus.student.index', ['students' => $students])->with('title', 'Quản lý sinh viên');
     }
 
@@ -40,12 +48,12 @@ class StudentController extends Controller
         }
 
         $student = new Student();
-        $student->student_code = $request->get('student_code');
-        $student->last_name    = $request->get('last_name');
-        $student->first_name   = $request->get('first_name');
+        $student->student_code = mb_strtoupper($request->get('student_code'), 'UTF-8');
+        $student->last_name    = mb_convert_case($request->get('last_name'), MB_CASE_TITLE, 'UTF-8');
+        $student->first_name   = mb_convert_case($request->get('first_name'), MB_CASE_TITLE, 'UTF-8');
         $student->birthday     = $request->get('birthday');
         $student->gender       = $request->get('gender');
-        $student->address      = $request->get('address');
+        $student->address      = mb_convert_case($request->get('address'), MB_CASE_TITLE, 'UTF-8');
         $student->attributes   = $attributes;
         $student->save();
 
@@ -56,6 +64,41 @@ class StudentController extends Controller
     {
         $student = Student::findOrFail($id);
         return view('hus.student.show', ['student' => $student])->with('title', 'Sửa sinh viên');
+    }
+
+    public function update(EditRequest $request, $id)
+    {
+        $attributes = '';
+        if ($request->has('attributes') && is_array($request->get('attributes')) && count($request->get('attributes') > 0)) {
+            $attributes = $request->get('attributes');
+            foreach ($attributes as $key => $attribute) {
+                if (!isset($attribute['name'])) {
+                    unset($attributes[$key]);
+                    continue;
+                }
+
+                if (!isset($attribute['value'])) {
+                    unset($attributes[$key]);
+                    continue;
+                }
+            }
+
+            $attributes = json_encode($attributes, JSON_UNESCAPED_UNICODE);
+        }
+
+        $student = Student::findOrFail($id);
+        $student->student_code = mb_strtoupper($request->get('student_code'), 'UTF-8');
+        $student->last_name    = mb_convert_case($request->get('last_name'), MB_CASE_TITLE, 'UTF-8');
+        $student->first_name   = mb_convert_case($request->get('first_name'), MB_CASE_TITLE, 'UTF-8');
+        $student->birthday     = $request->get('birthday');
+        $student->gender       = $request->get('gender');
+        $student->address      = mb_convert_case($request->get('address'), MB_CASE_TITLE, 'UTF-8');
+        $student->attributes   = $attributes;
+        $student->save();
+
+        $link = route("student.show", ['id' => $student->id]);
+        
+        return redirect()->route("student.index")->with(['success' => 'Cập nhật sinh viên thành công !!!, ', 'link' => $link]);
     }
 
     public function delete($id)

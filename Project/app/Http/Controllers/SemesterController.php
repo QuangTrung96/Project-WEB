@@ -25,7 +25,7 @@ class SemesterController extends Controller
     public function postAdd(Request $request)
     {
     	if ($request->ajax()) {
-    		$semesterName = strtoupper($request->get('semesterName'));
+    		$semesterName = mb_strtoupper($request->get('semesterName'), 'UTF-8');
             $scholasticID = $request->get('scholasticID');
             $result = Semester::where('semester_name', $semesterName)
                               ->where('scholastic_id', $scholasticID)
@@ -60,7 +60,7 @@ class SemesterController extends Controller
     {
         if ($request->ajax()) {
             $semeID = $request->get('semeID');
-            $semesterName = strtoupper($request->get('semesterName'));
+            $semesterName = mb_strtoupper($request->get('semesterName'), 'UTF-8');
             $scholasticID = $request->get('scholasticID');
 
             $result = Semester::where('semester_name', $semesterName)

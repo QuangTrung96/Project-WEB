@@ -31,9 +31,13 @@
 					@if(Session::has('error'))
 					<div class="warningx wredy"> {{ Session::get('error') }} </div>
 					@endif
-
+					
 					@if(Session::has('success'))
-					<div class="warningx wgreeny"> {{ Session::get('success') }} </div>
+					<div class="warningx wgreeny"> {{ Session::get('success') }} 
+						@if(Session::has('link'))
+							<a href="{{ Session::get('link') }}">xem lại tại đây.</a>
+						@endif
+					</div>
 					@endif
 
 					@yield('content')

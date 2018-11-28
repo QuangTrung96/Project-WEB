@@ -1,7 +1,9 @@
-@if(Route::current()->getName() != 'student.create' && count($errors))
-<div class="centerfix" id="infobar">
-	<div class="centercontent">{{ $errors->first() }}</div>
-</div>
+@if(count($errors))
+	@if((Route::current()->getName() != 'student.create' && Route::current()->getName() != 'student.show'))
+		<div class="centerfix" id="infobar">
+			<div class="centercontent">{{ $errors->first() }}</div>
+		</div>
+	@endif
 @endif
 
 @if(!Sentinel::check())
