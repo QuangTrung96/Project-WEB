@@ -43,9 +43,10 @@
       </div>
       <div style="clear: both;"></div>
       <br />
+      <br />
       <div class='panel panel-default'>
         <div class='panel-heading text-center'>
-          <h4 class='text-info'>Danh sách sinh viên</h4>
+          <h4 style="color: #00cc00;">Danh sách sinh viên</h4>
         </div>
         <div class='panel-body'>
           <div class='table-responsive'>

@@ -27,7 +27,7 @@
           </td>
         </tr>
       @empty
-        <tr>
+        <tr id="empty">
           <td colspan="4">Không có dữ liệu nào</td>
         </tr>
       @endforelse
@@ -131,6 +131,7 @@
                                       return $mess;
                                     });
                   } else {
+                      $('#empty').hide();
                       $('#form_mess').html('<ul><li>Thêm học kỳ thành công !!!</li></ul>')
                                      .removeClass('warningx wredy')
                                      .addClass('warningx wgreeny');

@@ -30,7 +30,7 @@ class StudentController extends Controller
     public function store(AddRequest $request)
     {
         $attributes = '';
-        if ($request->has('attributes') && is_array($request->get('attributes')) && count($request->get('attributes') > 0)) {
+        if ($request->has('attributes') && is_array($request->get('attributes')) && count($request->get('attributes')) > 0) {
             $attributes = $request->get('attributes');
             foreach ($attributes as $key => $attribute) {
                 if (!isset($attribute['name'])) {
@@ -69,7 +69,7 @@ class StudentController extends Controller
     public function update(EditRequest $request, $id)
     {
         $attributes = '';
-        if ($request->has('attributes') && is_array($request->get('attributes')) && count($request->get('attributes') > 0)) {
+        if ($request->has('attributes') && is_array($request->get('attributes')) && count($request->get('attributes')) > 0) {
             $attributes = $request->get('attributes');
             foreach ($attributes as $key => $attribute) {
                 if (!isset($attribute['name'])) {
