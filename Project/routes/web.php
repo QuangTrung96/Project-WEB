@@ -82,16 +82,21 @@ Route::group(['prefix' => 'subject', 'middleware' => 'check_access:admin'], func
 
 // Point
 Route::group(['prefix' => 'point', 'middleware' => 'check_access:admin'], function() {
-	Route::get('/', 'PointController@getList');
-	Route::get('list', 'PointController@getList')
-	          ->name('point_list_get');
-	Route::post('add', 'PointController@postAdd')
-	           ->name('point_add_post');
-	Route::post('edit', 'PointController@postEdit')
-	           ->name('point_edit_post');
+	Route::get('/', 'PointController@index');
+	Route::get('index', 'PointController@index')
+	          ->name('point.index');
+	Route::get('add', 'PointController@create')
+	           ->name('point.create');
+	Route::post('add', 'PointController@store')
+	           ->name('point.store');
+	Route::get('/edit/{id}', 'PointController@show')
+	          ->where(['id' => '[0-9]+'])
+	          ->name('point.show');
+	Route::put('/edit/{id}', 'PointController@update')
+              ->name('point.update');
 	Route::get('delete/{id}', 'PointController@getDelete')
 	          ->where(['id' => '[0-9]+'])
-	          ->name('point_delete_get');
+	          ->name('point.delete');
 });
 
 // Student

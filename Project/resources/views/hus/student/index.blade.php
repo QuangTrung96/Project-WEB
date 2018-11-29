@@ -110,6 +110,5 @@
   </div>
 @endsection
 @section('body_scripts_bottom')
-<script src='{{ asset('public/js/jquery.min.js') }}'></script>
 <script src='{{ asset('public/js/bootstrap.min.js') }}'></script>
 @endsection
