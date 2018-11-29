@@ -13,4 +13,9 @@ class Point extends Model
     	'point',
     	'exam_day'
     ];
+    
+    public function subject()
+    {
+        return $this->belongsTo('App\Subject', 'subject_code', 'subject_code');
+    }
 }

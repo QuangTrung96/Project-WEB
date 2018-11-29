@@ -15,7 +15,7 @@ class CreateSubjectsTable extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('subject_code');
+            $table->string('subject_code')->unique();
             $table->string('subject_name');
             $table->integer('user_id')->unsigned()->default(0);
             $table->tinyInteger('number_of_credits');

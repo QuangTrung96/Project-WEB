@@ -34,10 +34,10 @@
         <div style="float: left;">
           <a href='{{ route('student.create') }}' class='btn btn-primary'>Thêm sinh viên</a>
         </div>
-        <div class="search">
+        <div style="float: right;">
           {!! Form::open(['method' => 'GET','route' => 'student.index']) !!}
+            <input type="submit" value="Search" style="float: right;" />
             <input type="text" name="keyword" placeholder="Type you word ..." @if(Request::has('keyword')) value="{{ Request::get('keyword') }}" @endif() />
-            <input type="submit" value="Search" />
           {!! Form::close() !!}
         </div>
       </div>
@@ -49,7 +49,7 @@
         </div>
         <div class='panel-body'>
           <div class='table-responsive'>
-            <table class='table'>
+            <table class='table table-bordered'>
               <thead>
                 <tr>
                   <th>MSV</th>
@@ -92,7 +92,8 @@
                     </td>
                   </tr>
                 @empty
-                  <tr>
+                  <br />
+                  <tr class="text-center">
                     <td colspan="6">Không có dữ liệu nào</td>
                   </tr>
                 @endforelse
