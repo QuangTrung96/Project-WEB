@@ -104,8 +104,11 @@ class StudentController extends Controller
     public function delete($id)
     {
         $student = Student::findOrFail($id);
-        $student->delete();
+        if ($student->point->count() == 0) {
+            $student->delete();
+            return redirect()->route('student.index')->with('success', "Thực hiện xóa thành công !!!");
+        }
 
-        return redirect()->route('student.index')->with('success', "Thực hiện xóa thành công !!!");
+        return redirect()->route('student.index')->with('error', "Bạn không thể xóa sinh viên này !!!");
     }
 }

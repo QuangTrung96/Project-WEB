@@ -24,6 +24,9 @@
     height: 1.799rem;
     padding-right: 12px;
   }
+  .row a:visited {
+    color: white !important;
+  }
 </style>
 <link href='{{ asset('public/css/bootstrap.min.css') }}' rel='stylesheet' />
 @section('content')
@@ -32,7 +35,7 @@
     <div class='col-md-12'>
       <div>
         <div style="float: left;">
-          <a href='javascript::void(0, 0)' class='btn btn-primary' id='add_point'>Thêm điểm</a>
+          <a href='{{ route('point.create') }}' class='btn btn-primary'>Thêm điểm</a>
         </div>
         <div style="float: right;">
           {!! Form::open(['method' => 'GET','route' => 'point.index']) !!}
@@ -50,11 +53,11 @@
         </div>
         <div class='panel-body'>
           <div class='table-responsive'>
-            <table class='table'>
+            <table class='table table-bordered'>
               <thead>
                 <tr>
+                  <th>MSV</th>
                   <th>Mã môn học</th>
-                  <th>Mã sinh viên</th>
                   <th>Điểm</th>
                   <th>Ngày thi</th>
                   <th>Chức năng</th>
@@ -63,8 +66,8 @@
               <tbody>
                 @forelse($points as $point)
                   <tr>
-                    <td>{{ $point->subject_code }}</td>
                     <td>{{ $point->student_code }}</td>
+                    <td>{{ $point->subject_code }}</td>
                     <td>{{ $point->point }}</td>
                     <td>{{ $point->exam_day }}</td>
                     <td>
@@ -88,7 +91,7 @@
                 @empty
                   <br />
                   <tr class="text-center">
-                    <td colspan="6">Không có dữ liệu nào</td>
+                    <td colspan="5">Không có dữ liệu nào</td>
                   </tr>
                 @endforelse
               </tbody>
@@ -96,46 +99,9 @@
           </div>
         </div>
       </div>
-      <div>&nbsp;</div>
-      <div class="panel panel-default" id="form_action">
-        <div class="panel-body">
-          <form action="{{ route('point.store') }}" method="POST" id="form_add">
-            {{ csrf_field() }}
-            <div class="form-group {{ $errors->has('subject_code') ? 'has-error' : '' }}">
-              <label for="subject_code">Mã môn học</label>
-              {{ Form::select('subject_code', $subjects, null, ['id' => 'subject_code', 'class' => 'form-control']) }}
-              <span class="help-block">{{ $errors->first('subject_code') }}</span>
-            </div>
-
-            <div class="form-group {{ $errors->has('student_code') ? 'has-error' : '' }}">
-              <label for="student_code">Mã sinh viên</label>
-              <input type="text" class="form-control" id="student_code" name="student_code" placeholder="Mã sinh viên"
-                value="{{ old('student_code') }}">
-              <span class="help-block">{{ $errors->first('student_code') }}</span>
-            </div>
-
-            <div class="form-group {{ $errors->has('point') ? 'has-error' : '' }}">
-              <label for="point">Điểm thi</label>
-              <input type="text" class="form-control" id="point" name="point" placeholder="Điểm thi"
-                value="{{ old('point') }}">
-              <span class="help-block">{{ $errors->first('point') }}</span>
-            </div>
-
-            <div class="form-group {{ $errors->has('exam_day') ? 'has-error' : '' }}">
-              <label for="exam_day">Ngày thi</label>
-              <input type="date" class="form-control" id="exam_day" name="exam_day" placeholder="Ngày thi"
-                value="{{ old('exam_day') }}">
-              <span class="help-block">{{ $errors->first('exam_day') }}</span>
-            </div>
-
-            <button type="submit" class="btn btn-success" id="add">Thêm</button>
-          </form>
-        </div>
-      </div>
     </div>
   </div>
 @endsection
 @section('body_scripts_bottom')
 <script src='{{ asset('public/js/bootstrap.min.js') }}'></script>
-<script src='{{ asset('public/js/point/index.js') }}'></script>
 @endsection

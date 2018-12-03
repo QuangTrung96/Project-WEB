@@ -16,4 +16,9 @@ class Student extends Model
     	'address',
     	'attributes'
     ];
+
+    public function point()
+    {
+        return $this->hasMany('App\Point', 'student_code', 'student_code');
+    }
 }

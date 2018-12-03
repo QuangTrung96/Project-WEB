@@ -24,6 +24,9 @@
     height: 1.799rem;
     padding-right: 12px;
   }
+  .row a:visited {
+    color: white !important;
+  }
 </style>
 <link href='{{ asset('public/css/bootstrap.min.css') }}' rel='stylesheet' />
 @section('content')

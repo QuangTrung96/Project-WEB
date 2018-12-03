@@ -3,6 +3,9 @@
   #header {
     margin-bottom: 55px;
   }
+  .row a:visited {
+    color: white !important;
+  }
 </style>
 <link href='{{ asset('public/css/bootstrap.min.css') }}' rel='stylesheet' />
 @section('content')

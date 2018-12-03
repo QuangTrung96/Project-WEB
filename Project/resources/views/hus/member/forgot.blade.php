@@ -1,4 +1,9 @@
 @extends('master')
+<style>
+	#login .centercontent span  {
+		height: 16px !important;
+	}
+</style>
 @section('content')
   <h1 id="replyh">{{ $title }}</h1>
   <p class="bluey">Please enter the information requested below.</p>

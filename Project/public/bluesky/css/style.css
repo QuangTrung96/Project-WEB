@@ -551,23 +551,23 @@ textarea.fullinput {
 
  
 /*Trịnh Quang Trung*/
-#scho_list td.title, #seme_list td.title, #subj_list td.title {
+#scho_list td.title, #seme_list td.title, #subj_list td.title, #point_list td.title {
 	color: #ffffff;
 	font-weight: bold;
 	background-color: #386dbb;
 }
 
-#scho_list td.title a, #seme_list td.title a, #subj_list td.title a {
+#scho_list td.title a, #seme_list td.title a, #subj_list td.title a, #point_list td.title a {
 	color: #ffffff;
 }
 
-#scho_list tr, #seme_list tr, #subj_list tr {
+#scho_list tr, #seme_list tr, #subj_list tr, #point_list tr {
 	font-size: 15px;
 	text-align: center;
 	border: 1px solid #00ccff;
 }
 
-#scho_list td, #seme_list td, #subj_list td {
+#scho_list td, #seme_list td, #subj_list td, #point_list td {
 	border: 1px solid #00ccff; 
 }
 

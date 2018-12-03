@@ -1,62 +1,45 @@
+function loadForm(id_form) {
+  $idForm = $('#'+id_form);
+  if ($idForm.is(':hidden')) {
+    $idForm.fadeIn('fast');
+  } else {
+      if (id_form != 'edit_scho') {
+        $idForm.fadeOut('fast');  
+      }
+    }
+}
+
+function clearForm() {
+  $('input[type=text], input[type=hidden]').val('');
+  $('form').hide();
+}
+
 $(document).ready(function () {
-	$('#form_action').hide();
 
-	$('#add_point').click(function() {
-		$("#form_action").slideToggle();
-	});
+	$('#add_form').on('submit', function(e) {
+    e.preventDefault();
+    $subject_code = $('#subject_code').val();
+    $student_code = $('student_code').val();
+    $point = $('point').val();
+    $exam_day = $('exam_day').val();
 
-	$('#form_action #add').click(function() {
-		point = $('#point').val();
-		exam_day = $('#exam_day').val();
-		student_code = $('#student_code').val();
-		subject_code = $('#subject_code').val();
-		
-		if (subject_code == '0') {
-			$('#subject_code').next().html('<span style="color: red">Vui lòng thêm môn học trước đã</span>');
-		} else {
-			$url = $('#form_add').attr('action');
-			$.ajax({
-                'url': $url,
-                'type': 'post',
-                'data': {
-                  'point': point,
-                  'exam_day': exam_day,
-                  'subject_code': subject_code,
-                  'student_code': student_code,
-                  '_token': '{{ csrf_token() }}'
-                },
-                'async': true,
-                'timeout': 10000,
-                'beforeSend' : function(xhr) {
-                  show_loading();
-                },
-                'complete': function(xhr) {
-                  hide_loading();
-                },
-                'success': function(data) {
-                  if (typeof(data) == 'object') {
-                    $('#form_mess').removeClass('warningx wgreeny')
-                                   .addClass('warningx wredy')
-                                   .html(function () {
-                                      var $mess = '<ul><li>' + data.mess + '</li></ul>';
-                                      return $mess;
-                                    });
-                  } else {
-                      $('#empty').hide();
-                      $('#form_mess').html('<ul><li>Thêm năm học thành công !!!</li></ul>')
-                                     .removeClass('warningx wredy')
-                                     .addClass('warningx wgreeny');
-                      $('#scho_list').append(data);
-                      clearForm();
-                    }
-                },
-                'error': function (e) {
-                  console.log(e);
-                }
-              });
-		}
-
-		return false;
-
-	});
+    $url = $('#add_form').attr('action');
+    $.ajax({
+      'url': $url,
+      'type': 'post',
+      'data': {
+        'subject_code': $subject_code,
+        '_token': '{{ csrf_token() }}'
+      },
+      'async': true,
+      'timeout': 10000,
+      'success': function(data) {
+        if (typeof(data) == 'object') {
+          alert('111');
+        } else {
+            alert('222');
+          }
+      }
+    });
+  });
 });

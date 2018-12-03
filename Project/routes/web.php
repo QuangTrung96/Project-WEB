@@ -92,11 +92,11 @@ Route::group(['prefix' => 'point', 'middleware' => 'check_access:admin'], functi
 	Route::get('/edit/{id}', 'PointController@show')
 	          ->where(['id' => '[0-9]+'])
 	          ->name('point.show');
-	Route::put('/edit/{id}', 'PointController@update')
+    Route::put('/edit/{id}', 'PointController@update')
               ->name('point.update');
-	Route::get('delete/{id}', 'PointController@getDelete')
-	          ->where(['id' => '[0-9]+'])
-	          ->name('point.delete');
+	Route::delete('delete/{id}', 'PointController@delete')
+	             ->where(['id' => '[0-9]+'])
+	             ->name('point.delete');
 });
 
 // Student

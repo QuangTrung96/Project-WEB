@@ -140,11 +140,17 @@ class SubjectController extends Controller
     {
         if ($request->ajax()) {
             $subject = Subject::findOrFail($id);
-            $subject->delete();
+            if ($subject->point->count() == 0) {
+                $subject->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'mess'   => 'Xóa môn học thành công !!!'
+                ]);
+            }
             
             return response()->json([
-                'status' => 'success',
-                'mess'   => 'Xóa môn học thành công !!!'
+                'status' => 'error',
+                'mess'   => 'Bạn không thể xóa môn học này !!!'
             ]);
         }
         
