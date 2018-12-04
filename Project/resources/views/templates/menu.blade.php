@@ -25,16 +25,13 @@
 		<li><a href="{{ route('logout_get') }}">Đăng xuất</a></li>												
 	</ul>
 </div>
-@endif
-
+@else
 <div id="rightcontent"><h1>Thông báo</h1>
 	<ul>
-		<li><a href="http://hus.vnu.edu.vn/vi/ann/main/5/100/58495" style="font-size: 11px;">Thông tin LATS của NCS Đặng Văn Thái</a></li>
-		<li><a href="http://hus.vnu.edu.vn/vi/ann/main/5/100/58494" style="font-size: 11px;">Thông tin LATS của NCS Lê Quang Toan</a></li>
-		<li><a href="http://hus.vnu.edu.vn/vi/ann/main/5/100/58506" style="font-size: 11px;">Thông tin LATS của NCS Trần Hồng Trâm</a></li>
-		<li><a href="http://hus.vnu.edu.vn/vi/ann/main/5/100/58492" style="font-size: 11px;">Thông tin LATS của NCS Đỗ Tuấn Long</a></li>
+		<li><a href="http://hus.vnu.edu.vn/vi/ann/main/5/100/58495" style="font-size: 12px;">Thông tin LATS của NCS Đặng Văn Thái</a></li>
+		<li><a href="http://hus.vnu.edu.vn/vi/ann/main/5/100/58494" style="font-size: 12px;">Thông tin LATS của NCS Lê Quang Toan</a></li>
+		<li><a href="http://hus.vnu.edu.vn/vi/ann/main/5/100/58506" style="font-size: 12px;">Thông tin LATS của NCS Trần Hồng Trâm</a></li>
+		<li><a href="http://hus.vnu.edu.vn/vi/ann/main/5/100/58492" style="font-size: 12px;">Thông tin LATS của NCS Đỗ Tuấn Long</a></li>
 	</ul>
 </div>
-<div>
-	<script type="text/javascript" src="http://huyenbi.net/widget/Widget.js"></script> <script type="text/javascript" src="http://huyenbi.net/widget/"></script>
-</div>
+@endif
