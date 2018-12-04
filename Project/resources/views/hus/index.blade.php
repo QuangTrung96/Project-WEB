@@ -22,33 +22,28 @@
   <!-- Wrapper for slides -->
   <div class="carousel-inner">
     <div class="item active">
-      <img src="{{ asset('public/img/VNU_lethanhtong_900x600.jpg') }}" alt="...">
+      <img src="{{ asset('public/img/VNU_lethanhtong_900x600.jpg') }}" alt="..." style="height: 466.66px">
       <div class="carousel-caption">
-        <h3>Caption Text</h3>
       </div>
     </div>
     <div class="item">
-      <img src="{{ asset('public/img/1-1600.jpg') }}" alt="...">
+      <img src="{{ asset('public/img/5555.jpg') }}" alt="..." style="height: 466.66px">
       <div class="carousel-caption">
-        <h3>Caption Text</h3>
       </div>
     </div>
     <div class="item">
-      <img src="{{ asset('public/img/2-1600.jpg') }}" alt="...">
+      <img src="{{ asset('public/img/555.jpg') }}" alt="..." style="height: 466.66px">
       <div class="carousel-caption">
-        <h3>Caption Text</h3>
       </div>
     </div>
     <div class="item">
-      <img src="{{ asset('public/img/4-1600.jpg') }}" alt="...">
+      <img src="{{ asset('public/img/22.jpg') }}" alt="..." style="height: 466.66px">
       <div class="carousel-caption">
-        <h3>Caption Text</h3>
       </div>
     </div>
     <div class="item">
-      <img src="{{ asset('public/img/13-1600.jpg') }}" alt="...">
+      <img src="{{ asset('public/img/1234.JPG') }}" alt="..." style="height: 466.66px">
       <div class="carousel-caption">
-        <h3>Caption Text</h3>
       </div>
     </div>
   </div>
