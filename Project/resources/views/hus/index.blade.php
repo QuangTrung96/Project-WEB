@@ -22,13 +22,13 @@
   <!-- Wrapper for slides -->
   <div class="carousel-inner">
     <div class="item active">
-      <img src="{{ asset('public/img/1.jpg') }}" alt="...">
+      <img src="{{ asset('public/img/VNU_lethanhtong_900x600.jpg') }}" alt="...">
       <div class="carousel-caption">
         <h3>Caption Text</h3>
       </div>
     </div>
     <div class="item">
-      <img src="{{ asset('public/img/2.jpg') }}" alt="...">
+      <img src="{{ asset('public/img/2.jpeg') }}" alt="...">
       <div class="carousel-caption">
         <h3>Caption Text</h3>
       </div>
