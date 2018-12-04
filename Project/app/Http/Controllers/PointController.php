@@ -7,12 +7,20 @@ use App\Point;
 use App\Subject;
 use Illuminate\Http\Request;
 use App\Http\Requests\Point\AddRequest;
+use App\Http\Requests\Point\EditRequest;
 
 class PointController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $points = Point::all();
+        if($request->has('keyword')){
+            $keyword = $request->get('keyword');
+            $points  = Point::where('student_code','like','%'. $keyword .'%')
+                            ->orWhere('subject_code','like','%'. $keyword .'%')
+                            ->paginate(3);
+        } else {
+            $points = Point::paginate(3);
+        }
 
     	return view('hus.point.index', compact('points'))->with('title', 'Quản lý điểm');
     }
@@ -54,6 +62,27 @@ class PointController extends Controller
         $point->save();
 
         return redirect()->route('point.index')->with('success', 'Thêm điểm cho sinh viên thành công !!!'); 
+    }
+
+    public function show($id)
+    {
+        $collection = Subject::select(DB::raw("CONCAT(subject_code, ': ', subject_name) as full_name, subject_code"));
+        $subjects = $collection->pluck('full_name', 'subject_code');
+
+        $point = Point::findOrFail($id);
+        return view('hus.point.show', compact('point', 'subjects'))->with('title', 'Sửa điểm');
+    }
+
+    public function update(EditRequest $request, $id)
+    {
+        $point = Point::findOrFail($id);
+        $point->point = $request->get('point');
+        $point->exam_day = $request->get('exam_day');
+        $point->subject_code = $request->get('subject_code');
+        $point->student_code = $request->get('student_code');
+        $point->save();
+
+        return redirect()->route("point.index")->with(['success' => 'Cập nhật điểm cho sinh viên thành công !!!']);
     }
 
     public function delete($id)

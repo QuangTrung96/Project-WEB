@@ -34,6 +34,12 @@
       </div>
     </div>
     <div class="item">
+      <img src="{{ asset('public/img/3.jpg') }}" alt="...">
+      <div class="carousel-caption">
+        <h3>Caption Text</h3>
+      </div>
+    </div>
+    <div class="item">
       <img src="{{ asset('public/img/4.jpg') }}" alt="...">
       <div class="carousel-caption">
         <h3>Caption Text</h3>

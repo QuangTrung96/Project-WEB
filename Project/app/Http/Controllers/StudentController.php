@@ -14,7 +14,9 @@ class StudentController extends Controller
     {
         if($request->has('keyword')){
             $keyword = $request->get('keyword');
-            $students = Student::where('student_code','like','%'. $keyword .'%')->paginate(3);
+            $students = Student::where('student_code','like','%'. $keyword .'%')
+                               ->orWhere('first_name','like','%'. $keyword .'%')
+                               ->paginate(3);
         } else {
             $students = Student::paginate(3);
         }

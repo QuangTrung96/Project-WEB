@@ -1,5 +1,5 @@
 @if(count($errors))
-	@if((Route::current()->getName() != 'student.create' && Route::current()->getName() != 'student.show' && Route::current()->getName() != 'point.create'))
+	@if((Route::current()->getName() != 'student.create' && Route::current()->getName() != 'student.show' && Route::current()->getName() != 'point.create' && Route::current()->getName() != 'point.show'))
 		<div class="centerfix" id="infobar">
 			<div class="centercontent">{{ $errors->first() }}</div>
 		</div>

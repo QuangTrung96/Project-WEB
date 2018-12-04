@@ -97,6 +97,9 @@
               </tbody>
             </table>
           </div>
+          <div class="text-center">
+            {{ $points->links() }}
+          </div>
         </div>
       </div>
     </div>
