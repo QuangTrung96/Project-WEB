@@ -18,4 +18,9 @@ class Point extends Model
     {
         return $this->belongsTo('App\Subject', 'subject_code', 'subject_code');
     }
+
+    public function student()
+    {
+        return $this->belongsTo('App\Student', 'student_code', 'student_code');
+    }
 }

@@ -13,12 +13,13 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         if($request->has('keyword')){
-            $keyword = $request->get('keyword');
+            $keyword  = $request->get('keyword');
             $students = Student::where('student_code','like','%'. $keyword .'%')
                                ->orWhere('first_name','like','%'. $keyword .'%')
+                               ->orderBy('id', 'desc')
                                ->paginate(3);
         } else {
-            $students = Student::paginate(3);
+            $students = Student::orderBy('id', 'desc')->paginate(3);
         }
 
     	return view('hus.student.index', ['students' => $students])->with('title', 'Quản lý sinh viên');
@@ -112,5 +113,15 @@ class StudentController extends Controller
         }
 
         return redirect()->route('student.index')->with('error', "Bạn không thể xóa sinh viên này !!!");
+    }
+
+    public function detail($id) {
+        $student = Student::findOrFail($id);
+        $detail  = $student->join('points', 'students.student_code', '=', 'points.student_code')
+                           ->join('subjects', 'subjects.subject_code', '=', 'points.subject_code')
+                           ->get()
+                           ->toArray();
+                           
+        return view('hus.student.detail', compact('detail'))->with('title', 'Thông tin sinh viên');
     }
 }

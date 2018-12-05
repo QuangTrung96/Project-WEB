@@ -17,9 +17,10 @@ class PointController extends Controller
             $keyword = $request->get('keyword');
             $points  = Point::where('student_code','like','%'. $keyword .'%')
                             ->orWhere('subject_code','like','%'. $keyword .'%')
+                            ->orderBy('id', 'desc')
                             ->paginate(3);
         } else {
-            $points = Point::paginate(3);
+            $points = Point::orderBy('id', 'desc')->paginate(3);
         }
 
     	return view('hus.point.index', compact('points'))->with('title', 'Quản lý điểm');
