@@ -139,7 +139,7 @@ class AuthController extends Controller
                     'full_name' => $user->last_name . ' ' . $user->first_name
                 ];
                 
-                Mail::send('mails.reset_pass', $dataEmail, function($mess) use($dataEmail) {
+                Mail::send('mails.reset_pass', $dataEmail, function($mess) use ($dataEmail) {
                     $mess->from(env('MAIL_USERNAME'), 'No-reply Email');
                     $mess->to($dataEmail['email'], $dataEmail['full_name']);
                     $mess->subject('Your new password on the hus.vnu.edu.vn');

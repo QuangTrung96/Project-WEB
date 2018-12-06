@@ -16,6 +16,7 @@ class StudentController extends Controller
             $keyword = $request->get('keyword');
             $students = Student::where('student_code','like','%'. $keyword .'%')
                                ->orWhere('first_name','like','%'. $keyword .'%')
+                               ->orderBy('id','desc')
                                ->paginate(3);
         } else {
             $students = Student::paginate(3);

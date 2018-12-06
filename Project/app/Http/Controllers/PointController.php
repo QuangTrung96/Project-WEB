@@ -17,6 +17,7 @@ class PointController extends Controller
             $keyword = $request->get('keyword');
             $points  = Point::where('student_code','like','%'. $keyword .'%')
                             ->orWhere('subject_code','like','%'. $keyword .'%')
+                            ->orderBy('id','desc')
                             ->paginate(3);
         } else {
             $points = Point::paginate(3);
