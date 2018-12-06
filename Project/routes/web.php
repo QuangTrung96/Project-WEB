@@ -116,6 +116,9 @@ Route::group(['prefix' => 'student', 'middleware' => 'check_access:admin'], func
 	Route::delete('delete/{id}', 'StudentController@delete')
 	             ->where(['id' => '[0-9]+'])
 	             ->name('student.delete');
+	Route::get('/detail/{id}', 'StudentController@detail')
+	          ->where(['id' => '[0-9]+'])
+	          ->name('student.detail');
 });
 	          
 Route::get('create_user', function() {

@@ -69,7 +69,7 @@
                     $full_name = $student->last_name . ' ' . $student->first_name;
                   @endphp
                   <tr>
-                    <td>{{ $student->student_code }}</td>
+                    <td><a href="{{ route('student.detail', ['id' => $student->id]) }}">{{ $student->student_code }}</a></td>
                     <td style='word-break: break-all'>{{ $full_name }}</td>
                     <td>{{ $student->birthday }}</td>
                     @if ($student->gender === 1)
