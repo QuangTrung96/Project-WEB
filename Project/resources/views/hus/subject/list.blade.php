@@ -5,7 +5,11 @@
     <div id='form_mess' style='width: 701px'></div>
 		<tr>
 			<td class='title' colspan='7'>
-				<a href='javascript:void(0)' onclick='loadForm("add_subj")'>Thêm môn học</a>
+        @if (Sentinel::getUser()->hasAccess('subject_add'))
+				  <a href='javascript:void(0)' onclick='loadForm("add_subj")'>Thêm môn học</a>
+        @else
+          <a href='javascript:void(0)'>Thêm môn học</a>
+        @endif
 			</td>
 		</tr>
     <div id='modal' class='modal' style='display: none; width: 1080px'></div>
@@ -29,12 +33,20 @@
         <td>{{ $subject->number_of_credits }}</td>
 				<td>{{ $subject->semester->semester_name }}</td>
 				<td>
-          <a href='javascript:void(0)' onclick='editSubj(
-          {{ $subject->id }}, "{{ $subject->subject_code }}", "{{ $subject->subject_name }}", {{ $subject->user_id }}, {{ $subject->number_of_credits }}, {{ $subject->semester_id }}
-          )'>Sửa</a>
+          @if (Sentinel::getUser()->hasAccess('subject_edit'))
+            <a href='javascript:void(0)' onclick='editSubj(
+            {{ $subject->id }}, "{{ $subject->subject_code }}", "{{ $subject->subject_name }}", {{ $subject->user_id }}, {{ $subject->number_of_credits }}, {{ $subject->semester_id }}
+            )'>Sửa</a>
+          @else
+            <a href='javascript:void(0)'>Sửa</a>
+          @endif
         </td>
 				<td>
-          <a href='javascript:void(0)' onclick='deleteSubj({{ $subject->id }})'>Xóa</a>
+          @if (Sentinel::getUser()->hasAccess('subject_delete'))
+            <a href='javascript:void(0)' onclick='deleteSubj({{ $subject->id }})'>Xóa</a>
+          @else
+            <a href='javascript:void(0)'>Xóa</a>
+          @endif
         </td>
 			</tr>
 		@empty

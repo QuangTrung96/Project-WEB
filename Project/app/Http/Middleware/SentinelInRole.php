@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Sentinel;
 
-class SentinelHasAccess
+class SentinelInRole
 {
     /**
      * Handle an incoming request.
@@ -18,19 +18,21 @@ class SentinelHasAccess
     {
         $actions = $request->route()->getAction();
 
-        if (array_key_exists('hasAccess', $actions)) {
+        if (array_key_exists('inRole', $actions)) {
+            $roles = $actions['inRole'];
 
-            $permissions = $actions['hasAccess'];
-            $user = Sentinel::getUser();
+            if (is_array($roles) || is_object($roles)) {
+                foreach ($roles as $r) {
+                    if($this->checkRole($r)) {
+                        return $next($request);
+                    }
+                }
+            } else {
+                if ($this->checkRole($roles)) {
+                    return $next($request);
+                }
+            }
 
-            // Check hasAccess
-            if ($user->hasAccess($permissions)) {
-                return $next($request);
-            }
-            if ($request->ajax() || $request->wantsJson()) {
-                return response('Bạn không có quyền thực hiện hành động này !!!');
-            }
-            
             return redirect()->route('index')->with('error', 'Bạn không có quyền thực hiện hành động này !!!');
         }
 

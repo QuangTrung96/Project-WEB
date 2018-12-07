@@ -35,7 +35,11 @@
     <div class='col-md-12'>
       <div>
         <div style="float: left;">
-          <a href='{{ route('point.create') }}' class='btn btn-primary'>Thêm điểm</a>
+          @if (Sentinel::getUser()->hasAccess('point_add'))
+            <a href='{{ route('point.create') }}' class='btn btn-primary'>Thêm điểm</a>
+          @else
+            <a href='javascript:void(0)' class='btn btn-primary'>Thêm điểm</a>
+          @endif
         </div>
         <div style="float: right;">
           {!! Form::open(['method' => 'GET','route' => 'point.index']) !!}
@@ -71,16 +75,29 @@
                     <td>{{ $point->point }}</td>
                     <td>{{ $point->exam_day }}</td>
                     <td>
-                      <a href="{{ route('point.show', ['id' => $point->id]) }}"
-                      class="btn btn-primary">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                      </a>
-                      <a href="{{ route('point.delete', ['id' => $point->id]) }}"
-                      class="btn btn-danger"
-                      onclick="event.preventDefault();
-                      window.confirm('Bạn đã chắc chắn xóa chưa ?') ?
-                      document.getElementById('point-delete-{{ $point->id }}').submit() :
-                      0;"><i class="glyphicon glyphicon-remove"></i></a>
+                      @if (Sentinel::getUser()->hasAccess('point_edit'))
+                        <a href="{{ route('point.show', ['id' => $point->id]) }}"
+                        class="btn btn-primary">
+                          <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+                      @else
+                        <a href="javascript:void(0)"
+                        class="btn btn-primary">
+                          <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+                      @endif
+                      @if (Sentinel::getUser()->hasAccess('point_delete'))
+                        <a href="{{ route('point.delete', ['id' => $point->id]) }}"
+                        class="btn btn-danger"
+                        onclick="event.preventDefault();
+                        window.confirm('Bạn đã chắc chắn xóa chưa ?') ?
+                        document.getElementById('point-delete-{{ $point->id }}').submit() :
+                        0;"><i class="glyphicon glyphicon-remove"></i></a>
+                      @else
+                        <a href="javascript:void(0)" class="btn btn-danger">
+                          <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                      @endif
                       <form action="{{ route('point.delete', ['id' => $point->id]) }}"
                         method="post" id="point-delete-{{ $point->id }}">
                         {{ csrf_field() }}

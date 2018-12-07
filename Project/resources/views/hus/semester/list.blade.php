@@ -6,7 +6,11 @@
       <div id='form_mess' style='width: 450px'></div>
       <tr>
         <td class='title' colspan='4'>
-          <a href='javascript:void(0)' onclick='loadForm("add_seme")'>Thêm học kỳ</a>
+          @if (Sentinel::getUser()->hasAccess('semester_add'))
+            <a href='javascript:void(0)' onclick='loadForm("add_seme")'>Thêm học kỳ</a>
+          @else
+            <a href='javascript:void(0)'>Thêm học kỳ</a>
+          @endif
         </td>
       </tr>
       <tr>
@@ -20,10 +24,18 @@
           <td>{{ $semester->semester_name }}</td>
           <td>{{ $semester->scholastic->year }}</td>
           <td>
-            <a href='javascript:void(0)' onclick='editSeme({{ $semester->id }}, "{{ $semester->semester_name }}", {{ $semester->scholastic_id }})'>Sửa</a>
+            @if (Sentinel::getUser()->hasAccess('semester_edit'))
+              <a href='javascript:void(0)' onclick='editSeme({{ $semester->id }}, "{{ $semester->semester_name }}", {{ $semester->scholastic_id }})'>Sửa</a>
+            @else
+              <a href='javascript:void(0)'>Sửa</a>
+            @endif
           </td>
           <td>
-            <a href='javascript:void(0)' onclick='deleteSeme({{ $semester->id }})'>Xóa</a>
+            @if (Sentinel::getUser()->hasAccess('semester_delete'))
+              <a href='javascript:void(0)' onclick='deleteSeme({{ $semester->id }})'>Xóa</a>
+            @else
+              <a href='javascript:void(0)'>Xóa</a>
+            @endif
           </td>
         </tr>
       @empty

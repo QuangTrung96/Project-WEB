@@ -6,7 +6,11 @@
       <div id='form_mess' style='width: 450px'></div>
       <tr>
         <td class='title' colspan='3'>
-          <a href='javascript:void(0)' onclick='loadForm("add_scho")'>Thêm năm học</a>
+          @if (Sentinel::getUser()->hasAccess('scholastic_add'))
+            <a href='javascript:void(0)' onclick='loadForm("add_scho")'>Thêm năm học</a>
+          @else
+            <a href='javascript:void(0)'>Thêm năm học</a>
+          @endif
         </td>
       </tr>
       <tr>
@@ -18,10 +22,18 @@
         <tr id='scho_{{ $scholastic->id }}'>
           <td>{{ $scholastic->year }}</td>
           <td>
-            <a href='javascript:void(0)' onclick='editScho({{ $scholastic->id }}, "{{ $scholastic->year }}")'>Sửa</a>
+            @if (Sentinel::getUser()->hasAccess('scholastic_edit'))
+              <a href='javascript:void(0)' onclick='editScho({{ $scholastic->id }}, "{{ $scholastic->year }}")'>Sửa</a>
+            @else
+              <a href='javascript:void(0)'>Sửa</a>
+            @endif
           </td>
           <td>
-            <a href='javascript:void(0)' onclick='deleteScho({{ $scholastic->id }})'>Xóa</a>
+            @if (Sentinel::getUser()->hasAccess('scholastic_delete'))
+              <a href='javascript:void(0)' onclick='deleteScho({{ $scholastic->id }})'>Xóa</a>
+            @else
+              <a href='javascript:void(0)'>Xóa</a>
+            @endif
           </td>
         </tr>
       @empty

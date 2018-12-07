@@ -13,7 +13,11 @@
   <div class="row">
     <div class="col-md-12">
       <div>
-        <a href="{{ route('point.index') }}" class="btn btn-primary">Danh sách điểm</a>
+        @if (Sentinel::getUser()->hasAccess('point_view'))
+          <a href="{{ route('point.index') }}" class="btn btn-primary">Danh sách điểm</a>
+        @else
+          <a href="javascript:void(0)" class="btn btn-primary">Danh sách điểm</a>
+        @endif
       </div>
       <br />
       <div class="panel panel-default">

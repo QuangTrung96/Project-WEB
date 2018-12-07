@@ -40,103 +40,197 @@ Route::group(['prefix' => 'member'], function() {
 
 Route::group(['middlewareGroups' => ['web'], 'middleware' => ['check_user', 'hasAccess', 'inRole']], function () 
 { 
+	// Scholastic
     Route::group([
         'prefix' => 'scholastic',
         'as' => 'scholastic_'
     ], function () { 
-        Route::get('/', [
+    	Route::get('/', [
+            'hasAccess' => ['scholastic_view'],
+            'uses' => 'ScholasticController@getList'
+        ]);
+        Route::get('list', [
             'as' => 'list_get',
             'hasAccess' => ['scholastic_view'],
             'uses' => 'ScholasticController@getList'
         ]);
-
-
+        Route::post('add', [
+            'as' => 'add_post',
+            'hasAccess' => ['scholastic_add'],
+            'uses' => 'ScholasticController@postAdd'
+        ]);
+        Route::post('edit', [
+            'as' => 'edit_post',
+            'hasAccess' => ['scholastic_edit'],
+            'uses' => 'ScholasticController@postEdit'
+        ]);
+        Route::get('delete/{id}', [
+            'as' => 'delete_get',
+            'hasAccess' => ['scholastic_delete'],
+            'uses' => 'ScholasticController@getDelete',
+            'where' => ['id' => '[0-9]+']
+        ]);
     });
 
+    // Semester
+    Route::group([
+        'prefix' => 'semester',
+        'as' => 'semester_'
+    ], function () { 
+    	Route::get('/', [
+            'hasAccess' => ['semester_view'],
+            'uses' => 'SemesterController@getList'
+        ]);
+        Route::get('list', [
+            'as' => 'list_get',
+            'hasAccess' => ['semester_view'],
+            'uses' => 'SemesterController@getList'
+        ]);
+        Route::post('add', [
+            'as' => 'add_post',
+            'hasAccess' => ['semester_add'],
+            'uses' => 'SemesterController@postAdd'
+        ]);
+        Route::post('edit', [
+            'as' => 'edit_post',
+            'hasAccess' => ['semester_edit'],
+            'uses' => 'SemesterController@postEdit'
+        ]);
+        Route::get('delete/{id}', [
+            'as' => 'delete_get',
+            'hasAccess' => ['semester_delete'],
+            'uses' => 'SemesterController@getDelete',
+            'where' => ['id' => '[0-9]+']
+        ]);
+    });
+
+    // Subject
+    Route::group([
+        'prefix' => 'subject',
+        'as' => 'subject_'
+    ], function () { 
+    	Route::get('/', [
+            'hasAccess' => ['subject_view'],
+            'uses' => 'SubjectController@getList'
+        ]);
+        Route::get('list', [
+            'as' => 'list_get',
+            'hasAccess' => ['subject_view'],
+            'uses' => 'SubjectController@getList'
+        ]);
+        Route::post('add', [
+            'as' => 'add_post',
+            'hasAccess' => ['subject_add'],
+            'uses' => 'SubjectController@postAdd'
+        ]);
+        Route::post('edit', [
+            'as' => 'edit_post',
+            'hasAccess' => ['subject_edit'],
+            'uses' => 'SubjectController@postEdit'
+        ]);
+        Route::get('delete/{id}', [
+            'as' => 'delete_get',
+            'hasAccess' => ['subject_delete'],
+            'uses' => 'SubjectController@getDelete',
+            'where' => ['id' => '[0-9]+']
+        ]);
+    });
+
+    // Point
+    Route::group([
+        'prefix' => 'point',
+        'as' => 'point.'
+    ], function () { 
+    	Route::get('/', [
+            'hasAccess' => ['point_view'],
+            'uses' => 'PointController@index'
+        ]);
+        Route::get('index', [
+            'as' => 'index',
+            'hasAccess' => ['point_view'],
+            'uses' => 'PointController@index'
+        ]);
+        Route::get('add', [
+            'as' => 'create',
+            'hasAccess' => ['point_add'],
+            'uses' => 'PointController@create'
+        ]);
+        Route::post('add', [
+            'as' => 'store',
+            'hasAccess' => ['point_add'],
+            'uses' => 'PointController@store'
+        ]);
+        Route::get('edit/{id}', [
+            'as' => 'show',
+            'hasAccess' => ['point_edit'],
+            'uses' => 'PointController@show',
+            'where' => ['id' => '[0-9]+']
+        ]);
+        Route::put('edit/{id}', [
+            'as' => 'update',
+            'hasAccess' => ['point_edit'],
+            'uses' => 'PointController@update',
+            'where' => ['id' => '[0-9]+']
+        ]);
+        Route::delete('delete/{id}', [
+            'as' => 'delete',
+            'hasAccess' => ['point_delete'],
+            'uses' => 'PointController@delete',
+            'where' => ['id' => '[0-9]+']
+        ]);
+    });
+
+    // Student
+    Route::group([
+        'prefix' => 'student',
+        'as' => 'student.'
+    ], function () { 
+    	Route::get('/', [
+            'hasAccess' => ['student_view'],
+            'uses' => 'StudentController@index'
+        ]);
+        Route::get('index', [
+            'as' => 'index',
+            'hasAccess' => ['student_view'],
+            'uses' => 'StudentController@index'
+        ]);
+        Route::get('add', [
+            'as' => 'create',
+            'hasAccess' => ['student_add'],
+            'uses' => 'StudentController@create'
+        ]);
+        Route::post('add', [
+            'as' => 'store',
+            'hasAccess' => ['student_add'],
+            'uses' => 'StudentController@store'
+        ]);
+        Route::get('edit/{id}', [
+            'as' => 'show',
+            'hasAccess' => ['student_edit'],
+            'uses' => 'StudentController@show',
+            'where' => ['id' => '[0-9]+']
+        ]);
+        Route::put('edit/{id}', [
+            'as' => 'update',
+            'hasAccess' => ['student_edit'],
+            'uses' => 'StudentController@update',
+            'where' => ['id' => '[0-9]+']
+        ]);
+        Route::delete('delete/{id}', [
+            'as' => 'delete',
+            'hasAccess' => ['student_delete'],
+            'uses' => 'StudentController@delete',
+            'where' => ['id' => '[0-9]+']
+        ]);
+        Route::get('detail/{id}', [
+            'as' => 'detail',
+            'hasAccess' => ['student_detail'],
+            'uses' => 'StudentController@detail',
+            'where' => ['id' => '[0-9]+']
+        ]);
+    });
 });
 
-// Scholastic
-// Route::group(['prefix' => 'scholastic', 'middleware' => 'check_access:admin'], function() {
-// 	Route::get('list', 'ScholasticController@getList')
-// 	          ->name('scholastic_list_get');
-// 	Route::post('add', 'ScholasticController@postAdd')
-// 	           ->name('scholastic_add_post');
-// 	Route::post('edit', 'ScholasticController@postEdit')
-// 	           ->name('scholastic_edit_post');
-// 	Route::get('delete/{id}', 'ScholasticController@getDelete')
-// 	          ->where(['id' => '[0-9]+'])
-// 	          ->name('scholastic_delete_get');
-// });
-
-// Semester
-Route::group(['prefix' => 'semester', 'middleware' => 'check_access:admin'], function() {
-	Route::get('/', 'SemesterController@getList');
-	Route::get('list', 'SemesterController@getList')
-	          ->name('semester_list_get');
-	Route::post('add', 'SemesterController@postAdd')
-	           ->name('semester_add_post');
-	Route::post('edit', 'SemesterController@postEdit')
-	           ->name('semester_edit_post');
-	Route::get('delete/{id}', 'SemesterController@getDelete')
-	          ->where(['id' => '[0-9]+'])
-	          ->name('semester_delete_get');
-});
-
-// Subject
-Route::group(['prefix' => 'subject', 'middleware' => 'check_access:admin'], function() {
-	Route::get('/', 'SubjectController@getList');
-	Route::get('list', 'SubjectController@getList')
-	          ->name('subject_list_get');
-	Route::post('add', 'SubjectController@postAdd')
-	           ->name('subject_add_post');
-	Route::post('edit', 'SubjectController@postEdit')
-	           ->name('subject_edit_post');
-	Route::get('delete/{id}', 'SubjectController@getDelete')
-	          ->where(['id' => '[0-9]+'])
-	          ->name('subject_delete_get');
-});
-
-// Point
-Route::group(['prefix' => 'point', 'middleware' => 'check_access:admin'], function() {
-	Route::get('/', 'PointController@index');
-	Route::get('index', 'PointController@index')
-	          ->name('point.index');
-	Route::get('add', 'PointController@create')
-	           ->name('point.create');
-	Route::post('add', 'PointController@store')
-	           ->name('point.store');
-	Route::get('/edit/{id}', 'PointController@show')
-	          ->where(['id' => '[0-9]+'])
-	          ->name('point.show');
-    Route::put('/edit/{id}', 'PointController@update')
-              ->name('point.update');
-	Route::delete('delete/{id}', 'PointController@delete')
-	             ->where(['id' => '[0-9]+'])
-	             ->name('point.delete');
-});
-
-// Student
-Route::group(['prefix' => 'student', 'middleware' => 'check_access:admin'], function() {
-	Route::get('/', 'StudentController@index');
-	Route::get('index', 'StudentController@index')
-	          ->name('student.index');
-	Route::get('add', 'StudentController@create')
-	           ->name('student.create');
-	Route::post('add', 'StudentController@store')
-	           ->name('student.store');
-	Route::get('/edit/{id}', 'StudentController@show')
-	          ->where(['id' => '[0-9]+'])
-	          ->name('student.show');
-    Route::put('/edit/{id}', 'StudentController@update')
-              ->name('student.update');
-	Route::delete('delete/{id}', 'StudentController@delete')
-	             ->where(['id' => '[0-9]+'])
-	             ->name('student.delete');
-	Route::get('/detail/{id}', 'StudentController@detail')
-	          ->where(['id' => '[0-9]+'])
-	          ->name('student.detail');
-});
-	          
 Route::get('create_user_not_active', function() {
 	$user = Sentinel::getUserRepository()->create([
 		'username' => 'admin',

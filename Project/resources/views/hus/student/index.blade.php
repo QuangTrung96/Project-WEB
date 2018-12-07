@@ -36,7 +36,11 @@
     <div class='col-md-12'>
       <div>
         <div style="float: left;">
-          <a href='{{ route('student.create') }}' class='btn btn-primary'>Thêm sinh viên</a>
+          @if (Sentinel::getUser()->hasAccess('student_add'))
+            <a href='{{ route('student.create') }}' class='btn btn-primary'>Thêm sinh viên</a>
+          @else
+            <a href='javascript:void(0)' class='btn btn-primary'>Thêm sinh viên</a>
+          @endif
         </div>
         <div style="float: right;">
           {!! Form::open(['method' => 'GET','route' => 'student.index']) !!}
@@ -82,16 +86,29 @@
                       <td>Nữ</td>
                     @endif
                     <td>
+                      @if (Sentinel::getUser()->hasAccess('student_edit'))
                       <a href="{{ route('student.show', ['id' => $student->id]) }}"
                       class="btn btn-primary">
                         <i class="glyphicon glyphicon-pencil"></i>
                       </a>
+                      @else
+                      <a href="javascript:void(0)"
+                      class="btn btn-primary">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                      </a>
+                      @endif
+                      @if (Sentinel::getUser()->hasAccess('student_delete'))
                       <a href="{{ route('student.delete', ['id' => $student->id]) }}"
                       class="btn btn-danger"
                       onclick="event.preventDefault();
                       window.confirm('Bạn đã chắc chắn xóa chưa ?') ?
                       document.getElementById('student-delete-{{ $student->id }}').submit() :
                       0;"><i class="glyphicon glyphicon-remove"></i></a>
+                      @else
+                      <a href="javascript:void(0)" class="btn btn-danger">
+                        <i class="glyphicon glyphicon-remove"></i>
+                      </a>
+                      @endif
                       <form action="{{ route('student.delete', ['id' => $student->id]) }}"
                         method="post" id="student-delete-{{ $student->id }}">
                         {{ csrf_field() }}
@@ -154,8 +171,9 @@
             show_loading();
           },
           success: function (data) {
-            if ($.trim(data) == 'timeout') {
-              alert('Access denied or session timeout');
+            if ($.trim(data) == 'Bạn không có quyền thực hiện hành động này !!!') {
+              $('#dialog-form').dialog("close");
+              alert('Bạn không có quyền thực hiện hành động này !!!');
               location.reload();
               return;
             }
