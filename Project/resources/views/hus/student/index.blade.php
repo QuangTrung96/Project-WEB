@@ -28,6 +28,7 @@
     color: white !important;
   }
 </style>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <link href='{{ asset('public/css/bootstrap.min.css') }}' rel='stylesheet' />
 @section('content')
   <h1 id='replyh'>{{ $title }}</h1>
@@ -69,7 +70,9 @@
                     $full_name = $student->last_name . ' ' . $student->first_name;
                   @endphp
                   <tr>
-                    <td><a href="{{ route('student.detail', ['id' => $student->id]) }}">{{ $student->student_code }}</a></td>
+                    <td>
+                      <a href="{{ route('student.detail', ['id' => $student->id]) }}" class="student-detail">{{ $student->student_code }}</a>
+                    </td>
                     <td style='word-break: break-all'>{{ $full_name }}</td>
                     <td>{{ $student->birthday }}</td>
                     @if ($student->gender === 1)
@@ -107,11 +110,84 @@
           <div class="text-center">
             {{ $students->links() }}
           </div>
+
+          <div id="dialog-form" title="Loading..." style="display:none;">
+            <p id="dialog-add-content">My POPUP</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 @endsection
 @section('body_scripts_bottom')
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <script src='{{ asset('public/js/bootstrap.min.js') }}'></script>
+<script>
+  $(document).ready(function () { 
+    init_dialog_form();
+  
+    $(".student-detail").click(function(e) {
+      e.preventDefault();
+      $("#dialog-form").dialog("open");
+      var url = $(this).attr('href');
+      $.ajax(
+        {
+          url: url,
+          type: 'GET',
+          //async: false,
+          //cache: false,
+          beforeSend: function (xhr) {
+            $('#dialog-form').html('');
+            //show_loading();
+          },
+          success: function (data) {
+            if ($.trim(data) == 'timeout') {
+              alert('Access denied or session timeout');
+              location.reload();
+              return;
+            }
+            //hide_loading();
+            $('#dialog-form').html(data);
+            $('#dialog-form').dialog('option', 'title', $('#dialog-form .h_title').text());
+            $('#dialog-form').dialog('open');
+            $('#btn_cancel').click(function (ev) {
+              $('#dialog-form').dialog("close");
+            });
+          }
+        }
+      )
+      return false;
+
+
+    });
+  });
+
+  function init_dialog_form(width) {
+    if (!width) {
+      width = 700;
+    }
+    $('#dialog-form').dialog(
+      {
+        autoOpen: false,
+        cache: false,
+        modal: true,
+        autoResize: true,
+        height: 'auto',
+        width: width,
+        draggable: true,
+        open: function (event, ui) {
+          $(event.target).dialog('widget')
+            .css({position: 'fixed'})
+            .position({my: 'center', at: 'center', of: window});
+          $('.ui-widget-overlay').bind('click', function () {
+            if (confirm('Close this form?'))
+              jQuery('#dialog-form').dialog('close');
+          })
+        }
+
+      }
+    );
+  }
+</script>
 @endsection
