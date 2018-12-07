@@ -54,6 +54,7 @@
         </div>
         <div class='panel-body'>
           <div class='table-responsive'>
+            <div id='modal' class='modal' style='display: none; margin-left: 20px;'></div>
             <table class='table table-bordered'>
               <thead>
                 <tr>
@@ -106,7 +107,6 @@
                 @endforelse
               </tbody>
             </table>
-            <div id='modal' class='modal' style='display: none; width: 850px'></div>
           </div>
           <div class="text-center">
             {{ $students->links() }}
