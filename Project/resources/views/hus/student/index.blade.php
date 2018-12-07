@@ -28,7 +28,7 @@
     color: white !important;
   }
 </style>
-<link href='{{ asset('public/css/jquery-ui.css') }}' rel='stylesheet' />
+<link href='{{ asset('public/css/jquery-ui.min.css') }}' rel='stylesheet' />
 <link href='{{ asset('public/css/bootstrap.min.css') }}' rel='stylesheet' />
 @section('content')
   <h1 id='replyh'>{{ $title }}</h1>
