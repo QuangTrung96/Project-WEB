@@ -35,7 +35,7 @@
 					@if(Session::has('success'))
 					<div class="warningx wgreeny"> {{ Session::get('success') }} 
 						@if(Session::has('link'))
-							<a href="{{ Session::get('link') }}">xem lại tại đây.</a>
+							<a href="{{ Session::get('link') }}" style="color: #bace18">xem lại tại đây.</a>
 						@endif
 					</div>
 					@endif

@@ -115,12 +115,11 @@ class StudentController extends Controller
         return redirect()->route('student.index')->with('error', "Bạn không thể xóa sinh viên này !!!");
     }
 
-    public function detail($id) {
+    public function detail($id, Request $request) {
         $student = Student::findOrFail($id);
         $detail  = $student->join('points', 'students.student_code', '=', 'points.student_code')
                            ->join('subjects', 'subjects.subject_code', '=', 'points.subject_code')
-                           ->get()
-                           ->toArray();
+                           ->get();
                            
         return view('hus.student.detail', compact('detail'))->with('title', 'Thông tin sinh viên');
     }

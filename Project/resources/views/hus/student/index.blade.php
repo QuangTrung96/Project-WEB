@@ -28,7 +28,7 @@
     color: white !important;
   }
 </style>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+<link href='{{ asset('public/css/jquery-ui.css') }}' rel='stylesheet' />
 <link href='{{ asset('public/css/bootstrap.min.css') }}' rel='stylesheet' />
 @section('content')
   <h1 id='replyh'>{{ $title }}</h1>
@@ -71,7 +71,7 @@
                   @endphp
                   <tr>
                     <td>
-                      <a href="{{ route('student.detail', ['id' => $student->id]) }}" class="student-detail">{{ $student->student_code }}</a>
+                      <a href="{{ route('student.detail', ['id' => $student->id]) }}" class="student-detail" style="color: red !important">{{ $student->student_code }}</a>
                     </td>
                     <td style='word-break: break-all'>{{ $full_name }}</td>
                     <td>{{ $student->birthday }}</td>
@@ -106,12 +106,13 @@
                 @endforelse
               </tbody>
             </table>
+            <div id='modal' class='modal' style='display: none; width: 850px'></div>
           </div>
           <div class="text-center">
             {{ $students->links() }}
           </div>
 
-          <div id="dialog-form" title="Loading..." style="display:none;">
+          <div id="dialog-form" title="Loading..." style="display:none;margin-top: 12px;">
             <p id="dialog-add-content">My POPUP</p>
           </div>
         </div>
@@ -120,10 +121,20 @@
   </div>
 @endsection
 @section('body_scripts_bottom')
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<script src='{{ asset('public/js/jquery-ui.min.js') }}'></script>
 <script src='{{ asset('public/js/bootstrap.min.js') }}'></script>
 <script>
+  var isShowingLoading = false;
+  function show_loading() {
+    isShowingLoading = true;
+    $('#modal').show();
+  }
+
+  function hide_loading() {
+    isShowingLoading = false;
+    $('#modal').hide();
+  }
+
   $(document).ready(function () { 
     init_dialog_form();
   
@@ -135,11 +146,12 @@
         {
           url: url,
           type: 'GET',
+          timeout: 10000,
           //async: false,
           //cache: false,
           beforeSend: function (xhr) {
             $('#dialog-form').html('');
-            //show_loading();
+            show_loading();
           },
           success: function (data) {
             if ($.trim(data) == 'timeout') {
@@ -147,25 +159,32 @@
               location.reload();
               return;
             }
-            //hide_loading();
+            hide_loading();
             $('#dialog-form').html(data);
+            $('#dialog-form').dialog('option', 'title', $('#dialog-form .h_title').text());
             $('#dialog-form').dialog('option', 'title', $('#dialog-form .h_title').text());
             $('#dialog-form').dialog('open');
             $('#btn_cancel').click(function (ev) {
               $('#dialog-form').dialog("close");
             });
+          },
+          error: function(jqXHR, textStatus){
+            if(textStatus === 'timeout')
+            {     
+              alert('Access denied or session timeout');
+              location.reload();
+              return;
+            }
           }
         }
       )
       return false;
-
-
     });
   });
 
   function init_dialog_form(width) {
     if (!width) {
-      width = 700;
+      width = 1000;
     }
     $('#dialog-form').dialog(
       {
@@ -177,9 +196,12 @@
         width: width,
         draggable: true,
         open: function (event, ui) {
+          $(this).closest(".ui-dialog")
+          .find(".ui-dialog-titlebar-close")
+          .html("<span class='ui-button-icon-primary ui-icon ui-icon-closethick'></span>");
           $(event.target).dialog('widget')
             .css({position: 'fixed'})
-            .position({my: 'center', at: 'center', of: window});
+            .position({my: 'right-173 top+120', at: 'right top', of: window, collision: 'none'});
           $('.ui-widget-overlay').bind('click', function () {
             if (confirm('Close this form?'))
               jQuery('#dialog-form').dialog('close');

@@ -1,49 +1,70 @@
-@extends('master')
-<style type='text/css'>
-  #header {
-    margin-bottom: 55px;
-  }
-  .pagination li.active {
-    width: 12px;
-    padding: 0px 0px;
-    margin-left: 8px;
-    margin-right: 19px;
-  }
-  .pagination li.active span {
-    width: 12px;
-    height: 1.799rem;
-  }
-  .pagination li.disabled {
-    width: 12px;
-    padding: 0px 0px;
-    margin-left: 5px;
-    margin-right: 15px;
-  }
-  .pagination li.disabled span {
-    width: 12px;
-    height: 1.799rem;
-    padding-right: 12px;
-  }
-  .row a:visited {
-    color: white !important;
-  }
+<style>
+    .table-log {
+        border-spacing: 0;
+        border-collapse: collapse;
+        width: 100% !important
+    }
+
+    .table-log th {
+        background: url("../../../public/img/bg_box_head.jpg") repeat-x scroll 0 0 transparent;
+        border-left: 1px solid #ffffff;
+        border-right: 1px solid #ffffff;
+        color: #dacdcd;
+        font-size: 10px;
+        font-weight: bold;
+        padding: 3px;
+        text-shadow: 0 1px #242424;
+    }
+
+    .table-log td, .table-log th {
+        padding: 5px;
+    }
+
+    .dialog-content {
+        max-height: 1000px;
+        overflow-y: auto;
+    }
 </style>
-<link href='{{ asset('public/css/bootstrap.min.css') }}' rel='stylesheet' />
-@section('content')
-  <h1 id='replyh'>{{ $title }}</h1>
-  <div class='row'>
-    <div class='col-md-12'>
-      <div class='panel panel-default'>
-        <div class='panel-heading text-center'>
-          <h4 style="color: #666699;">Thông tin sinh viên</h4>
-        </div>
-        <div class='panel-body'>
-        	<h1></h1>
-        </div>
-      </div>
+<div class="dialog-content">
+    <div class="h_title">{{$title}}</div>
+    <table class="table-log">
+        <thead>
+        <tr>
+            <th>MSV</th>
+            <th>Họ và tên</th>
+            <th>Ngày sinh</th>
+            <th>Giới tính</th>
+            <th>Địa chỉ</th>
+            <th>Thông tin thêm</th>
+        </tr>
+        </thead>
+        <tbody>
+           @foreach ($detail as $detail)
+           <tr>
+               @php
+                 $as = json_decode($detail->attributes, true);
+               @endphp
+               <td>{{ $detail->student_code }}</td>
+               <td>{{ $detail->last_name . ' ' . $detail->first_name }}</td>
+               <td>{{ $detail->birthday }}</td>
+               @if ($detail->gender === 1)
+                 <td>Nam</td>
+               @else
+                 <td>Nữ</td>
+               @endif
+               <td>{{ $detail->exam_day }}</td>
+               <td>
+                 @if (count($as) > 0)
+                   @foreach ($as as $a)
+                     <span style="color: #3395F7">{{ $a['name'] }}</span>: <span>{{ $a['value'] }}</span><br />
+                   @endforeach
+                 @endif
+               </td>
+           </tr>
+           @endforeach
+        </tbody>
+    </table>
+    <div class="entry clear" style="padding: 5px 0; text-align: right; margin-top: 20px;">
+        <button class="cancel" type="button" id="btn_cancel">Close</button>
     </div>
-  </div>
-@endsection
-@section('body_scripts_bottom')
-<script src='{{ asset('public/js/bootstrap.min.js') }}'></script>
-@endsection
+</div>
