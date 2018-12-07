@@ -121,7 +121,7 @@ Route::group(['prefix' => 'student', 'middleware' => 'check_access:admin'], func
 	          ->name('student.detail');
 });
 	          
-Route::get('create_user', function() {
+Route::get('create_user_not_active', function() {
 	$user = Sentinel::getUserRepository()->create([
 		'username' => 'admin',
 		'email'    => 'admin@gmail.com',
@@ -145,6 +145,21 @@ Route::get('create_user_active', function() {
 		'first_name' => 'Trung',
 		'permissions' => [
 			'admin' => true
+		]
+	]);
+
+	return "Done";
+});
+
+Route::get('create_user', function() {
+	$userActive = Sentinel::registerAndActivate([
+		'username' => 'huynq6953',
+		'email'    => 'trinhquangtrung1b@gmail.com',
+		'password' => '123456',
+		'last_name' => 'Nguyễn Quang',
+		'first_name' => 'Huy',
+		'permissions' => [
+
 		]
 	]);
 
