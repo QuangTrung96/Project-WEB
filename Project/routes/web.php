@@ -254,7 +254,27 @@ Route::get('create_user_active', function() {
 		'last_name' => 'Trịnh Quang',
 		'first_name' => 'Trung',
 		'permissions' => [
-			'admin' => true
+		    "scholastic_view" => true,
+            "scholastic_add" => true,
+            "scholastic_edit" => true,
+            "scholastic_delete" => true,
+            "semester_view" => true,
+            "semester_add" => true,
+            "semester_edit" => true,
+            "semester_delete" => true,
+            "subject_view" => true,
+            "subject_add" => true,
+            "subject_edit" => true,
+            "subject_delete" => true,
+            "point_view" => true,
+            "point_add" => true,
+            "point_edit" => true,
+            "point_delete" => true,
+            "student_view" => true,
+            "student_add" => true,
+            "student_edit" => true,
+            "student_delete" => true,
+            "student_detail" => true
 		]
 	]);
 
@@ -269,7 +289,8 @@ Route::get('create_user', function() {
 		'last_name' => 'Nguyễn Quang',
 		'first_name' => 'Huy',
 		'permissions' => [
-
+            "student_view" => true,
+            "student_detail" => true
 		]
 	]);
 
