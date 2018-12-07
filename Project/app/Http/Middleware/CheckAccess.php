@@ -19,13 +19,13 @@ class CheckAccess
         if (Sentinel::check()) {
             if (!Sentinel::getUser()->hasAccess($role)) {
                 return redirect()->route('index')
-                                 ->with('error', 'Tài khoản của bạn, không đủ quyền hạn, để thực hiện thao tác này!');     
+                                 ->with('error', 'Tài khoản của bạn, không đủ quyền hạn, để thực hiện thao tác này !');     
             }
 
             return $next($request);
         }
 
         return redirect()->route('index')
-                         ->with('error', 'Bạn phải đăng nhập để thực hiện thao tác này!');
+                         ->with('error', 'Bạn phải đăng nhập để thực hiện thao tác này !');
     }
 }

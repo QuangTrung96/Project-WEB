@@ -18,7 +18,7 @@ class CheckUser
     {
         if (!Sentinel::check()) {
             return redirect()->route('index')
-                             ->with('error', 'Bạn phải đăng nhập để thực hiện thao tác này!');
+                             ->with('error', 'Bạn phải đăng nhập để thực hiện thao tác này !');
         }
 
         return $next($request);

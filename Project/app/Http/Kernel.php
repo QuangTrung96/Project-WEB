@@ -63,5 +63,6 @@ class Kernel extends HttpKernel
         'check_user' => \App\Http\Middleware\CheckUser::class,
         'is_login' => \App\Http\Middleware\IsLogin::class,
         'check_access' => \App\Http\Middleware\CheckAccess::class,
+        'hasAccess' => \App\Http\Middleware\SentinelHasAccess::class,
     ];
 }

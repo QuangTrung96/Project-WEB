@@ -18,7 +18,7 @@ class IsLogin
     {
         if (Sentinel::check()) {
             return redirect()->route('index')
-                             ->with('error', 'Bạn đã đăng nhập vào hệ thống rồi!');
+                             ->with('error', 'Bạn đã đăng nhập vào hệ thống rồi !');
         }
 
         return $next($request);
