@@ -5,7 +5,6 @@
     <style type="text/css">
       .container {
         width: 100%;
-        color: #222;
         height: auto;
         background-color: #eeeeee;
         font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
@@ -13,7 +12,7 @@
 
       .panel {
         width: 580px;
-        height: 460px;
+        height: 475px;
         margin: 0 auto;
         background-color: #ffffff;
       }
@@ -43,7 +42,6 @@
       }
 
       .panel-wapper {
-        color: black !important;
         padding-top: 20px;
         padding-left: 10px;
       }
@@ -74,7 +72,7 @@
           <span>Thay đổi mật khẩu!</span>
         </div>
         <div class="panel-wapper">
-          <p>
+          <p style="color: black">
             Chào bạn <strong>{{ $full_name }}</strong>,
           </p>
           <p>
