@@ -5,6 +5,7 @@
     <style type="text/css">
       .container {
         width: 100%;
+        color: #222;
         height: auto;
         background-color: #eeeeee;
         font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
@@ -33,11 +34,11 @@
       }
 
       .panel-header span {
-        float: left;
+        float: right;
         font-size: 25px;
         margin-top: 40px;
         text-align: center;
-        margin-left: 180px;
+        margin-right: 60px;
         color: rgb(255,255,255);
       }
 
