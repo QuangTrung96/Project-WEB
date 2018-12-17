@@ -33,11 +33,11 @@
       }
 
       .panel-header span {
-        float: left;
+        float: right;
         font-size: 25px;
         margin-top: 40px;
         text-align: center;
-        margin-left: 180px;
+        margin-right: 60px;
         color: rgb(255,255,255);
       }
 
