@@ -124,4 +124,17 @@
 @endsection
 @section('body_scripts_bottom')
 <script src='{{ asset('public/js/bootstrap.min.js') }}'></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('thead').on({
+      mouseenter: function () {
+        $(this).css('background-color', 'lightgray');
+      },
+
+      mouseleave: function () {
+        $(this).css('background-color', 'lightblue');
+      }
+    });
+  });
+</script>
 @endsection

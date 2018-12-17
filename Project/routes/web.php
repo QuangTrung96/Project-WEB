@@ -11,31 +11,38 @@
 |
 */
 
-Route::get('/', 'MainController@index')->name('index');
+Route::group(['middleware'=>'web'], function() {
+    Route::get('/', [
+        'as' => 'index',
+        'uses' => 'MainController@index'
+    ]);
 
-// Member
-Route::group(['prefix' => 'member'], function() {
-    Route::post('login', 'AuthController@postLogin')
-               ->name('login_post');
-    Route::get('login', 'AuthController@getLogin')
-              ->name('login_get')
-              ->middleware('is_login');
-    Route::get('logout', 'AuthController@getLogout')
-              ->name('logout_get')
-              ->middleware('check_user');
-    Route::get('changepass', 'AuthController@getChangePass')
-              ->name('changepass_get')
-              ->middleware('check_user');
-    Route::post('changepass', 'AuthController@postChangePass')
-               ->name('changepass_post');
-    Route::get('forgot', 'AuthController@getForgot')
-              ->name('forgot_get')
-              ->middleware('is_login');
-    Route::post('forgot', 'AuthController@postForgot')
-               ->name('forgot_post');
-    Route::get('active/{username}/{code}', 'AuthController@getActiveReset')
-              ->name('active_reset_get')
-              ->middleware('is_login');
+    // Member
+    Route::group([
+        'prefix' => 'member'
+    ], function() {
+        Route::post('login', 'AuthController@postLogin')
+                   ->name('login_post');
+        Route::get('login', 'AuthController@getLogin')
+                  ->name('login_get')
+                  ->middleware('is_login');
+        Route::get('logout', 'AuthController@getLogout')
+                  ->name('logout_get')
+                  ->middleware('check_user');
+        Route::get('changepass', 'AuthController@getChangePass')
+                  ->name('changepass_get')
+                  ->middleware('check_user');
+        Route::post('changepass', 'AuthController@postChangePass')
+                   ->name('changepass_post');
+        Route::get('forgot', 'AuthController@getForgot')
+                  ->name('forgot_get')
+                  ->middleware('is_login');
+        Route::post('forgot', 'AuthController@postForgot')
+                   ->name('forgot_post');
+        Route::get('active/{username}/{code}', 'AuthController@getActiveReset')
+                  ->name('active_reset_get')
+                  ->middleware('is_login');
+    });
 });
 
 Route::group(['middlewareGroups' => ['web'], 'middleware' => ['check_user', 'hasAccess', 'inRole']], function () 

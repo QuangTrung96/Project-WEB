@@ -93,61 +93,46 @@
 	{{ Form::close() }}
 @endsection
 @section('code_js')
+  <script src='{{ asset('public/js/common.js') }}'></script>
   <script  type='text/javascript'>
     function loadForm(id_form) {
-    	$idForm = $('#'+id_form);
+      $idForm = $('#' + id_form);
 
       if ($idForm.is(':hidden')) {
         if (id_form == 'edit_subj') {
-          $('#add_subj').fadeOut('fast');  
+          $('#add_subj').fadeOut('fast');
           $idForm.fadeIn('fast');
         } else {
-            $('#edit_subj').fadeOut('fast');  
-            $idForm.fadeIn('fast');
-          }    
-      } else {
-          $idForm.fadeOut('fast');  
+          $('#edit_subj').fadeOut('fast');
+          $idForm.fadeIn('fast');
         }
+      } else {
+        $idForm.fadeOut('fast');
+      }
     }
 
-    function clearForm() {
-    	$('input[type=text], input[type=hidden]').val('');
-    	$('form').hide();
-    }
-
-    var isShowingLoading = false;
-    function show_loading() {
-      isShowingLoading = true;
-      $('#modal').show();
-    }
-
-    function hide_loading() {
-      isShowingLoading = false;
-      $('#modal').hide();
-    }
-
-    $(document).ready(function() {
-    	$('#add_subj').on('submit', function(e) {
-    		e.preventDefault();
+    $(document).ready(function () {
+      $('#add_subj').on('submit', function (e) {
+        e.preventDefault();
         $subjectCode = $('#add_subj_subject_code').val().trim();
-    		$subjectName = $('#add_subj_subject_name').val().trim();
-        $semesterID  = $('[name=semester]').val();
+        $subjectName = $('#add_subj_subject_name').val().trim();
+        $semesterID = $('[name=semester]').val();
 
         if ($subjectCode == '') {
           $('#form_mess').html('<ul><li>Vui lòng nhập mã môn học !!!</li></ul>')
-                         .removeClass('warningx wgreeny')
-                         .addClass('warningx wredy');
+            .removeClass('warningx wgreeny')
+            .addClass('warningx wredy');
         } else if ($subjectName == '') {
           $('#form_mess').html('<ul><li>Vui lòng nhập tên môn học !!!</li></ul>')
-                         .removeClass('warningx wgreeny')
-                         .addClass('warningx wredy');
+            .removeClass('warningx wgreeny')
+            .addClass('warningx wredy');
         } else if ($semesterID == '0') {
           $('#form_mess').html('<ul><li>Bạn phải thêm học kỳ trước đã !!!</li></ul>')
-                         .removeClass('warningx wgreeny')
-                         .addClass('warningx wredy');
+            .removeClass('warningx wgreeny')
+            .addClass('warningx wredy');
         } else {
-          $('#form_mess').html('&nbsp;')
-                         .removeClass('warningx wredy');
+          $('#form_mess').html(' ')
+            .removeClass('warningx wredy');
           $userID = $('[name=user]').val();
           $numberOfCredits = $('[name=credit]').val();
           $url = $('#add_subj').attr('action');
@@ -155,33 +140,34 @@
             'url': $url,
             'type': 'post',
             'data': {
-              'subjectCode'    : $subjectCode,
-              'subjectName'    : $subjectName,
-              'userID'         : $userID,
+              'subjectCode': $subjectCode,
+              'subjectName': $subjectName,
+              'userID': $userID,
               'numberOfCredits': $numberOfCredits,
-              'semesterID'     : $semesterID,
-              '_token'         : '{{ csrf_token() }}'},
+              'semesterID': $semesterID,
+              '_token': '{{ csrf_token() }}'
+            },
             'async': true,
             'timeout': 10000,
-            'beforeSend' : function(xhr) {
+            'beforeSend': function (xhr) {
               show_loading();
             },
-            'complete': function(xhr) {
+            'complete': function (xhr) {
               hide_loading();
             },
-            'success': function(data) {
-              if (typeof(data) == 'object') {
+            'success': function (data) {
+              if (typeof (data) == 'object') {
                 $('#form_mess').removeClass('warningx wgreeny')
-                               .addClass('warningx wredy')
-                               .html(function () {
-                                  var $mess = '<ul><li>' + data.mess + '</li></ul>';
-                                  return $mess;
-                                });
+                  .addClass('warningx wredy')
+                  .html(function () {
+                    var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                    return $mess;
+                  });
               } else {
                 $('#empty').hide();
                 $('#form_mess').html('<ul><li>Thêm môn học thành công !!!</li></ul>')
-                               .removeClass('warningx wredy')
-                               .addClass('warningx wgreeny');
+                  .removeClass('warningx wredy')
+                  .addClass('warningx wgreeny');
                 $('#subj_list').append(data);
                 clearForm();
               }
@@ -191,24 +177,24 @@
             }
           });
         }
-    	});
+      });
 
-      $('#edit_subj').on('submit', function(e) {
+      $('#edit_subj').on('submit', function (e) {
         e.preventDefault();
         $subjectCode = $('#edit_subj_subject_code').val().trim();
         $subjectName = $('#edit_subj_subject_name').val().trim();
-        
+
         if ($subjectCode == '') {
           $('#form_mess').html('<ul><li>Vui lòng nhập mã môn học !!!</li></ul>')
-                         .removeClass('warningx wgreeny')
-                         .addClass('warningx wredy');
+            .removeClass('warningx wgreeny')
+            .addClass('warningx wredy');
         } else if ($subjectName == '') {
           $('#form_mess').html('<ul><li>Vui lòng nhập tên môn học !!!</li></ul>')
-                         .removeClass('warningx wgreeny')
-                         .addClass('warningx wredy');
+            .removeClass('warningx wgreeny')
+            .addClass('warningx wredy');
         } else {
-          $('#form_mess').html('&nbsp;')
-                         .removeClass('warningx wredy');
+          $('#form_mess').html(' ')
+            .removeClass('warningx wredy');
           $subjID = $('#edit_subj_id').val();
           $userID = $('[name=user_select]').val();
           $numberOfCredits = $('[name=credit_select]').val();
@@ -218,35 +204,36 @@
             'url': $url,
             'type': 'post',
             'data': {
-              'subjID'         : $subjID,
-              'subjectCode'    : $subjectCode,
-              'subjectName'    : $subjectName,
-              'userID'         : $userID,
+              'subjID': $subjID,
+              'subjectCode': $subjectCode,
+              'subjectName': $subjectName,
+              'userID': $userID,
               'numberOfCredits': $numberOfCredits,
-              'semesterID'     : $semesterID,
-              '_token'         : '{{ csrf_token() }}'},
+              'semesterID': $semesterID,
+              '_token': '{{ csrf_token() }}'
+            },
             'async': true,
             'timeout': 10000,
-            'beforeSend' : function(xhr) {
+            'beforeSend': function (xhr) {
               show_loading();
             },
-            'complete': function(xhr) {
+            'complete': function (xhr) {
               hide_loading();
             },
-            'success': function(data) {
+            'success': function (data) {
               if (typeof data == 'object') {
                 $('#form_mess').removeClass('warningx wgreeny')
-                               .addClass('warningx wredy')
-                               .html(function () {
-                                  var $mess = '<ul><li>' + data.mess + '</li></ul>';
-                                  return $mess;
-                                });
+                  .addClass('warningx wredy')
+                  .html(function () {
+                    var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                    return $mess;
+                  });
               } else {
                 $('#form_mess').html('<ul><li>Sửa môn học thành công !!!</li></ul>')
-                               .removeClass('warningx wredy')
-                               .addClass('warningx wgreeny');
+                  .removeClass('warningx wredy')
+                  .addClass('warningx wgreeny');
                 clearForm();
-                $('tr#subj_'+$subjID).html(data);
+                $('tr#subj_' + $subjID).html(data);
               }
             },
             'error': function (e) {
@@ -258,45 +245,40 @@
     });
 
     function editSubj(id, subject_code, subject_name, user_id, credit, semester_id) {
-    	$('#edit_subj_id').val(id);
+      $('#edit_subj_id').val(id);
       $('#edit_subj_subject_code').val(subject_code);
-    	$('#edit_subj_subject_name').val(subject_name);
-      $('select[name=user_select] option[value='+user_id+']').attr('selected', 'selected');
-      $('select[name=credit_select] option[value='+credit+']').attr('selected', 'selected');
-      $('select[name=semester_select] option[value='+semester_id+']').attr('selected', 'selected');
+      $('#edit_subj_subject_name').val(subject_name);
+      $('select[name=user_select] option[value=' + user_id + ']').attr('selected', 'selected');
+      $('select[name=credit_select] option[value=' + credit + ']').attr('selected', 'selected');
+      $('select[name=semester_select] option[value=' + semester_id + ']').attr('selected', 'selected');
       loadForm('edit_subj');
     }
 
-    function hideForm(id_form) {
-    	$('#'+id_form).hide();
-    	return false;
-    }
-
     function deleteSubj(id) {
-    	if (confirm('Bạn có chắc, muốn xóa môn học này ?')) {
-    		$.get('{{ url("subject/delete") }}/'+id, function(data) {
-    			if (typeof data == 'object') {
+      if (confirm('Bạn có chắc, muốn xóa môn học này ?')) {
+        $.get('{{ url("subject/delete") }}/' + id, function (data) {
+          if (typeof data == 'object') {
             $('#form_mess').removeClass('warningx wgreeny')
-                           .addClass('warningx wredy')
-                           .html(function () {
-                              var $mess = '<ul><li>' + data.mess + '</li></ul>';
-                              return $mess;
-                            });
+              .addClass('warningx wredy')
+              .html(function () {
+                var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                return $mess;
+              });
 
             if (data.status == 'success') {
               $('#form_mess').removeClass('warningx wredy')
-                             .addClass('warningx wgreeny')
-                             .html(function () {
-                                var $mess = '<ul><li>' + data.mess + '</li></ul>';
-                                return $mess;
-                              });
+                .addClass('warningx wgreeny')
+                .html(function () {
+                  var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                  return $mess;
+                });
               hideForm('add_subj');
               hideForm('edit_subj');
-              $('tr#subj_'+id).remove();
+              $('tr#subj_' + id).remove();
             }
-    			}
-    		});
-    	}
+          }
+        });
+      }
     }
   </script>
 @endsection

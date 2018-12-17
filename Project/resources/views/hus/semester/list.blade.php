@@ -72,136 +72,110 @@
   </div>
 @endsection
 @section('code_js')
+  <script src='{{ asset('public/js/common.js') }}'></script>
   <script  type='text/javascript'>
-    function loadForm(id_form) {
-      $idForm = $('#'+id_form);
-      if ($idForm.is(':hidden')) {
-        $idForm.fadeIn('fast');
-      } else {
-          if (id_form != 'edit_seme') {
-            $idForm.fadeOut('fast');  
-          }
-        }
-    }
-
-    function clearForm() {
-      $('input[type=text], input[type=hidden]').val('');
-      $('form').hide();
-    }
-
-    var isShowingLoading = false;
-    function show_loading() {
-      isShowingLoading = true;
-      $('#modal').show();
-    }
-
-    function hide_loading() {
-      isShowingLoading = false;
-      $('#modal').hide();
-    }
-
-    $(document).ready(function() {
-      $('#add_seme').on('submit', function(e) {
+    $(document).ready(function () {
+      $('#add_seme').on('submit', function (e) {
         e.preventDefault();
         $semesterName = $('#add_seme_semester_name').val().trim();
         $scholasticID = $('[name=scholastic]').val();
 
         if ($semesterName == '') {
           $('#form_mess').html('<ul><li>Vui lòng nhập tên cho học kỳ !!!</li></ul>')
-                         .removeClass('warningx wgreeny')
-                         .addClass('warningx wredy');
-        } else if ($scholasticID == '0') { 
-            $('#form_mess').html('<ul><li>Bạn phải thêm năm học trước đã !!!</li></ul>')
-                           .removeClass('warningx wgreeny')
-                           .addClass('warningx wredy');
-          } else {
-              $('#form_mess').html('&nbsp;')
-                             .removeClass('warningx wredy');
-              $url = $('#add_seme').attr('action');
-              $.ajax({
-                'url': $url,
-                'type': 'post',
-                'data': {
-                  'semesterName': $semesterName,
-                  'scholasticID': $scholasticID,
-                  '_token': '{{ csrf_token() }}'
-                },
-                'async': true,
-                'timeout': 10000,
-                'beforeSend' : function(xhr) {
-                  show_loading();
-                },
-                'complete': function(xhr) {
-                  hide_loading();
-                },
-                'success': function(data) {
-                  if (typeof(data) == "object") {
-                    $('#form_mess').removeClass('warningx wgreeny')
-                                   .addClass('warningx wredy')
-                                   .html(function () {
-                                      var $mess = '<ul><li>' + data.mess + '</li></ul>';
-                                      return $mess;
-                                    });
-                  } else {
-                      $('#empty').hide();
-                      $('#form_mess').html('<ul><li>Thêm học kỳ thành công !!!</li></ul>')
-                                     .removeClass('warningx wredy')
-                                     .addClass('warningx wgreeny');
-                      $('#seme_list').append(data);
-                      clearForm();
-                    }
-                },
-                'error': function (e) {
-                  console.log(e);
-                }
-              }); 
-            }
-      });
-
-      $('#edit_seme').on('submit', function(e) {
-        e.preventDefault();
-        $semesterName = $('#edit_seme_semester_name').val().trim();
-        if ($semesterName == '') {
-          $('#form_mess').html('<ul><li>Vui lòng nhập tên cho học kỳ !!!</li></ul>')
-                         .removeClass('warningx wgreeny')
-                         .addClass('warningx wredy');
+            .removeClass('warningx wgreeny')
+            .addClass('warningx wredy');
+        } else if ($scholasticID == '0') {
+          $('#form_mess').html('<ul><li>Bạn phải thêm năm học trước đã !!!</li></ul>')
+            .removeClass('warningx wgreeny')
+            .addClass('warningx wredy');
         } else {
-          $('#form_mess').html('&nbsp;')
-                         .removeClass('warningx wredy');
-          $semeID = $('#edit_seme_id').val();
-          $scholasticID = $('[name=scholastic_edit]').val();
-          $url = $('#edit_seme').attr('action');
+          $('#form_mess').html(' ')
+            .removeClass('warningx wredy');
+          $url = $('#add_seme').attr('action');
           $.ajax({
-            'url': '{{ route('semester_edit_post') }}',
+            'url': $url,
             'type': 'post',
             'data': {
-              'semeID': $semeID,
               'semesterName': $semesterName,
-              'scholasticID': $scholasticID ,
+              'scholasticID': $scholasticID,
               '_token': '{{ csrf_token() }}'
             },
             'async': true,
             'timeout': 10000,
-            'beforeSend' : function(xhr) {
+            'beforeSend': function (xhr) {
               show_loading();
             },
-            'complete': function(xhr) {
+            'complete': function (xhr) {
               hide_loading();
             },
-            'success': function(data) {
+            'success': function (data) {
+              if (typeof (data) == "object") {
+                $('#form_mess').removeClass('warningx wgreeny')
+                  .addClass('warningx wredy')
+                  .html(function () {
+                    var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                    return $mess;
+                  });
+              } else {
+                $('#empty').hide();
+                $('#form_mess').html('<ul><li>Thêm học kỳ thành công !!!</li></ul>')
+                  .removeClass('warningx wredy')
+                  .addClass('warningx wgreeny');
+                $('#seme_list').append(data);
+                clearForm();
+              }
+            },
+            'error': function (e) {
+              console.log(e);
+            }
+          });
+        }
+      });
+
+      $('#edit_seme').on('submit', function (e) {
+        e.preventDefault();
+        $semesterName = $('#edit_seme_semester_name').val().trim();
+        if ($semesterName == '') {
+          $('#form_mess').html('<ul><li>Vui lòng nhập tên cho học kỳ !!!</li></ul>')
+            .removeClass('warningx wgreeny')
+            .addClass('warningx wredy');
+        } else {
+          $('#form_mess').html(' ')
+            .removeClass('warningx wredy');
+          $semeID = $('#edit_seme_id').val();
+          $scholasticID = $('[name=scholastic_edit]').val();
+          $url = $('#edit_seme').attr('action');
+          $.ajax({
+            'url': "{{ route('semester_edit_post') }}",
+            'type': 'post',
+            'data': {
+              'semeID': $semeID,
+              'semesterName': $semesterName,
+              'scholasticID': $scholasticID,
+              '_token': '{{ csrf_token() }}'
+            },
+            'async': true,
+            'timeout': 10000,
+            'beforeSend': function (xhr) {
+              show_loading();
+            },
+            'complete': function (xhr) {
+              hide_loading();
+            },
+            'success': function (data) {
               if (typeof data == 'object') {
                 $('#form_mess').removeClass('warningx wgreeny')
-                               .addClass('warningx wredy')
-                               .html(function () {
-                                  var $mess = '<ul><li>' + data.mess + '</li></ul>';
-                                  return $mess;
-                                });
+                  .addClass('warningx wredy')
+                  .html(function () {
+                    var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                    return $mess;
+                  });
               } else {
                 $('#form_mess').html('<ul><li>Sửa học kỳ thành công !!!</li></ul>')
-                               .removeClass('warningx wredy')
-                               .addClass('warningx wgreeny');
+                  .removeClass('warningx wredy')
+                  .addClass('warningx wgreeny');
                 clearForm();
-                $('tr#seme_'+$semeID).html(data);
+                $('tr#seme_' + $semeID).html(data);
               }
             },
             'error': function (e) {
@@ -215,36 +189,31 @@
     function editSeme(id, semesterName, scholasticID) {
       $('#edit_seme_id').val(id);
       $('#edit_seme_semester_name').val(semesterName);
-      $('select[name=scholastic_edit] option[value='+scholasticID+']').attr('selected', 'selected');
+      $('select[name=scholastic_edit] option[value=' + scholasticID + ']').attr('selected', 'selected');
       loadForm('edit_seme');
-    }
-
-    function hideForm(id_form) {
-      $('#'+id_form).hide();
-      return false;
     }
 
     function deleteSeme(id) {
       if (confirm('Bạn có chắc, muốn xóa học kỳ này ?')) {
-        $.get('{{ url("semester/delete") }}/'+id, function(data) {
+        $.get('{{ url("semester/delete") }}/' + id, function (data) {
           if (typeof data == 'object') {
             $('#form_mess').removeClass('warningx wgreeny')
-                           .addClass('warningx wredy')
-                           .html(function () {
-                              var $mess = '<ul><li>' + data.mess + '</li></ul>';
-                              return $mess;
-                            });
+              .addClass('warningx wredy')
+              .html(function () {
+                var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                return $mess;
+              });
 
             if (data.status == 'success') {
               $('#form_mess').removeClass('warningx wredy')
-                             .addClass('warningx wgreeny')
-                             .html(function () {
-                                var $mess = '<ul><li>' + data.mess + '</li></ul>';
-                                return $mess;
-                              });
+                .addClass('warningx wgreeny')
+                .html(function () {
+                  var $mess = '<ul><li>' + data.mess + '</li></ul>';
+                  return $mess;
+                });
               hideForm('add_seme');
               hideForm('edit_seme');
-              $('tr#seme_'+id).remove();
+              $('tr#seme_' + id).remove();
             }
           }
         });
