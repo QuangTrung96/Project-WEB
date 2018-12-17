@@ -79,7 +79,7 @@
                       <a href="{{ route('student.detail', ['id' => $student->id]) }}" class="student-detail" style="color: red !important">{{ $student->student_code }}</a>
                     </td>
                     <td style='word-break: break-all'>{{ $full_name }}</td>
-                    <td>{{ $student->birthday }}</td>
+                    <td>{{ date("d-m-Y", strtotime($student->birthday)) }}</td>
                     @if ($student->gender === 1)
                       <td>Nam</td>
                     @else
@@ -199,7 +199,7 @@
 
   function init_dialog_form(width) {
     if (!width) {
-      width = 1000;
+      width = 1100;
     }
     $('#dialog-form').dialog({
       autoOpen: false,
@@ -218,7 +218,7 @@
             position: 'fixed'
           })
           .position({
-            my: 'right-173 top+120',
+            my: 'right-130 top+120',
             at: 'right top',
             of: window,
             collision: 'none'

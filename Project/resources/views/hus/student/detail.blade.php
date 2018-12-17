@@ -35,6 +35,8 @@
             <th>Ngày sinh</th>
             <th>Giới tính</th>
             <th>Địa chỉ</th>
+            <th>Môn học</th>
+            <th>Điểm thi</th>
             <th>Thông tin thêm</th>
         </tr>
         </thead>
@@ -46,13 +48,26 @@
                @endphp
                <td>{{ $detail->student_code }}</td>
                <td>{{ $detail->last_name . ' ' . $detail->first_name }}</td>
-               <td>{{ $detail->birthday }}</td>
+               <td>{{ date("d-m-Y", strtotime($detail->birthday)) }}</td>
                @if ($detail->gender === 1)
                  <td>Nam</td>
                @else
                  <td>Nữ</td>
                @endif
-               <td>{{ $detail->exam_day }}</td>
+               <td>{{ $detail->address }}</td>
+               @php
+                if ($detail->subject_name != '') {
+                  echo '<td>' . $detail->subject_name . '</td>';
+                } else {
+                  echo '<td> ... </td>';
+                }
+
+                if ($detail->point != '') {
+                  echo '<td>' . $detail->point . '</td>';
+                } else {
+                  echo '<td> ... </td>';
+                }
+               @endphp
                <td>
                  @if (count($as) > 0)
                    @foreach ($as as $a)
