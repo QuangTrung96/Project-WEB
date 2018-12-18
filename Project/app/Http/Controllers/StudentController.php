@@ -117,10 +117,14 @@ class StudentController extends Controller
 
     public function detail($id, Request $request) {
         $student = Student::findOrFail($id);
-        $detail  = $student->join('points', 'students.student_code', '=', 'points.student_code')
-                           ->join('subjects', 'subjects.subject_code', '=', 'points.subject_code')
+        $detail  = $student->leftJoin('points', 'students.student_code', '=', 'points.student_code')
+                           ->leftJoin('subjects', 'subjects.subject_code', '=', 'points.subject_code')
+                           ->select('students.student_code', 'students.first_name', 'students.last_name',
+                            'students.birthday', 'students.gender', 'students.address', 'students.attributes',
+                            'points.point', 'subjects.subject_name')
+                           ->where('students.student_code', '=', $student->student_code)
                            ->get();
-                           
+
         return view('hus.student.detail', compact('detail'))->with('title', 'Thông tin sinh viên');
     }
 }

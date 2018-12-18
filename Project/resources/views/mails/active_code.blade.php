@@ -12,8 +12,8 @@
       }
 
       .panel {
-        width: 580px;
-        height: 420px;
+        width: 550px;
+        height: 430px;
         margin: 0 auto;
         background-color: #ffffff;
       }
@@ -34,11 +34,11 @@
       }
 
       .panel-header span {
-        float: left;
+        float: right;
         font-size: 25px;
         margin-top: 40px;
         text-align: center;
-        margin-left: 180px;
+        margin-right: 60px;
         color: rgb(255,255,255);
       }
 

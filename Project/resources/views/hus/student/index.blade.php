@@ -79,7 +79,7 @@
                       <a href="{{ route('student.detail', ['id' => $student->id]) }}" class="student-detail" style="color: red !important">{{ $student->student_code }}</a>
                     </td>
                     <td style='word-break: break-all'>{{ $full_name }}</td>
-                    <td>{{ $student->birthday }}</td>
+                    <td>{{ date("d-m-Y", strtotime($student->birthday)) }}</td>
                     @if ($student->gender === 1)
                       <td>Nam</td>
                     @else
@@ -140,94 +140,96 @@
 @section('body_scripts_bottom')
 <script src='{{ asset('public/js/jquery-ui.min.js') }}'></script>
 <script src='{{ asset('public/js/bootstrap.min.js') }}'></script>
-<script>
-  var isShowingLoading = false;
-  function show_loading() {
-    isShowingLoading = true;
-    $('#modal').show();
-  }
-
-  function hide_loading() {
-    isShowingLoading = false;
-    $('#modal').hide();
-  }
-
-  $(document).ready(function () { 
+<script src='{{ asset('public/js/common.js') }}'></script>
+<script type="text/javascript">
+  $(document).ready(function () {
     init_dialog_form();
-  
-    $(".student-detail").click(function(e) {
+
+    $('thead').on({
+      mouseenter: function () {
+        $(this).css('background-color', 'lightgray');
+      },
+
+      mouseleave: function () {
+        $(this).css('background-color', 'lightblue');
+      }
+    });
+
+    $(".student-detail").click(function (e) {
       e.preventDefault();
       $("#dialog-form").dialog("open");
       var url = $(this).attr('href');
-      $.ajax(
-        {
-          url: url,
-          type: 'GET',
-          timeout: 10000,
-          //async: false,
-          //cache: false,
-          beforeSend: function (xhr) {
-            $('#dialog-form').html('');
-            show_loading();
-          },
-          success: function (data) {
-            if ($.trim(data) == 'Bạn không có quyền thực hiện hành động này !!!') {
-              $('#dialog-form').dialog("close");
-              alert('Bạn không có quyền thực hiện hành động này !!!');
-              location.reload();
-              return;
-            }
-            hide_loading();
-            $('#dialog-form').html(data);
-            $('#dialog-form').dialog('option', 'title', $('#dialog-form .h_title').text());
-            $('#dialog-form').dialog('option', 'title', $('#dialog-form .h_title').text());
-            $('#dialog-form').dialog('open');
-            $('#btn_cancel').click(function (ev) {
-              $('#dialog-form').dialog("close");
-            });
-          },
-          error: function(jqXHR, textStatus){
-            if(textStatus === 'timeout')
-            {     
-              alert('Access denied or session timeout');
-              location.reload();
-              return;
-            }
+      $.ajax({
+        url: url,
+        type: 'GET',
+        timeout: 10000,
+        //async: false,
+        //cache: false,
+        beforeSend: function (xhr) {
+          $('#dialog-form').html('');
+          show_loading();
+        },
+        success: function (data) {
+          if ($.trim(data) == 'Bạn không có quyền thực hiện hành động này !!!') {
+            $('#dialog-form').dialog("close");
+            alert('Bạn không có quyền thực hiện hành động này !!!');
+            location.reload();
+            return;
+          }
+          hide_loading();
+          $('#dialog-form').html(data);
+          $('#dialog-form').dialog('option', 'title', $('#dialog-form .h_title').text());
+          $('#dialog-form').dialog('option', 'title', $('#dialog-form .h_title').text());
+          $('#dialog-form').dialog('open');
+          $('#btn_cancel').click(function (ev) {
+            $('#dialog-form').dialog("close");
+          });
+        },
+        error: function (jqXHR, textStatus) {
+          if (textStatus === 'timeout') {
+            alert('Access denied or session timeout');
+            location.reload();
+            return;
           }
         }
-      )
+      })
       return false;
     });
   });
 
   function init_dialog_form(width) {
     if (!width) {
-      width = 1000;
+      width = 1100;
     }
-    $('#dialog-form').dialog(
-      {
-        autoOpen: false,
-        cache: false,
-        modal: true,
-        autoResize: true,
-        height: 'auto',
-        width: width,
-        draggable: true,
-        open: function (event, ui) {
-          $(this).closest(".ui-dialog")
+    $('#dialog-form').dialog({
+      autoOpen: false,
+      cache: false,
+      modal: true,
+      autoResize: true,
+      height: 'auto',
+      width: width,
+      draggable: true,
+      open: function (event, ui) {
+        $(this).closest(".ui-dialog")
           .find(".ui-dialog-titlebar-close")
           .html("<span class='ui-button-icon-primary ui-icon ui-icon-closethick'></span>");
-          $(event.target).dialog('widget')
-            .css({position: 'fixed'})
-            .position({my: 'right-173 top+120', at: 'right top', of: window, collision: 'none'});
-          $('.ui-widget-overlay').bind('click', function () {
-            if (confirm('Close this form?'))
-              jQuery('#dialog-form').dialog('close');
+        $(event.target).dialog('widget')
+          .css({
+            position: 'fixed'
           })
-        }
-
+          .position({
+            my: 'right-130 top+120',
+            at: 'right top',
+            of: window,
+            collision: 'none'
+          });
+        $('.ui-widget-overlay').bind('click', function () {
+          if (confirm('Close this form?'))
+            jQuery('#dialog-form').dialog('close');
+        })
       }
-    );
+
+    });
   }
 </script>
 @endsection
