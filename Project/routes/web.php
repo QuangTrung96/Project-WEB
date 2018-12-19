@@ -245,9 +245,10 @@ Route::get('create_user_not_active', function() {
 		'password' => '123456',
 		'last_name' => 'Trịnh Công',
 		'first_name' => 'Sơn',
-		'permissions' => [
-			'admin' => true
-		]
+        'permissions' => [
+            "student_view" => true,
+            "student_detail" => true
+        ]
 	]);
 
 	return "Done";

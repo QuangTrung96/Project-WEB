@@ -10,7 +10,7 @@
 		<meta charset="utf-8" />
 		<title>{{ $title }}</title>
 		<link media="all" type="text/css" rel="stylesheet" href="{{ asset('public/bluesky/css/style.css') }}" />
-		<link rel="shortcut icon" href="http://www.hus.vnu.edu.vn/sites/default/files/favicon.ico" type="image/vnd.microsoft.icon" />
+		<link rel="shortcut icon" href="{{ asset('public/favicon.ico') }}" type="image/vnd.microsoft.icon" />
 	</head>
 
 	<body>
