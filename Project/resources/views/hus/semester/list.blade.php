@@ -72,7 +72,6 @@
   </div>
 @endsection
 @section('code_js')
-  <script src='{{ asset('public/js/common.js') }}'></script>
   <script  type='text/javascript'>
     $(document).ready(function () {
       $('#add_seme').on('submit', function (e) {
@@ -189,7 +188,7 @@
     function editSeme(id, semesterName, scholasticID) {
       $('#edit_seme_id').val(id);
       $('#edit_seme_semester_name').val(semesterName);
-      $('select[name=scholastic_edit] option[value=' + scholasticID + ']').attr('selected', 'selected');
+      $('select[name=scholastic_edit] option[value=' + scholasticID + ']').prop('selected', true);
       loadForm('edit_seme');
     }
 

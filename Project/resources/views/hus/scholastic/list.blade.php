@@ -66,7 +66,6 @@
   </div>
 @endsection
 @section('code_js')
-  <script src='{{ asset('public/js/common.js') }}'></script>
 	<script  type='text/javascript'>
     $(document).ready(function () {
       $('#add_scho').on('submit', function (e) {
