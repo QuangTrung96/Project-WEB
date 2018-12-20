@@ -107,7 +107,7 @@
       template: '#qt-attributes-template',
       data: function () {
         var attributes = null;
-        @if($student->attributes)
+        @if ($student->attributes)
           attributes = {!! $student->attributes !!};
         @endif
         if (attributes == null || attributes.length == 0) {

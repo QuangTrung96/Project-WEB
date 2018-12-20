@@ -12,11 +12,11 @@ class StudentController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->has('keyword')){
+        if ($request->has('keyword')) {
             $keyword  = $request->get('keyword');
-            $students = Student::where('student_code','like','%'. $keyword .'%')
-                               ->orWhere('first_name','like','%'. $keyword .'%')
-                               ->orWhere('last_name','like','%'. $keyword .'%')
+            $students = Student::where('student_code', 'like', '%' . $keyword . '%')
+                               ->orWhere('first_name', 'like', '%' . $keyword . '%')
+                               ->orWhere('last_name', 'like', '%' . $keyword . '%')
                                ->orderBy('id', 'desc')
                                ->paginate(3);
         } else {

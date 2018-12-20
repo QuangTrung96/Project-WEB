@@ -13,15 +13,18 @@ class PointController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->has('keyword')){
+        $points = Point::join('subjects','points.subject_code', '=', 'subjects.subject_code')
+                       ->select('points.id', 'points.subject_code', 'points.student_code', 'points.point', 'points.exam_day', 'subjects.subject_name');
+
+        if ($request->has('keyword')) {
             $keyword = $request->get('keyword');
-            $points  = Point::where('student_code','like','%'. $keyword .'%')
-                            ->orWhere('subject_code','like','%'. $keyword .'%')
-                            ->orderBy('id','desc')
-                            ->paginate(3);
-        } else {
-            $points = Point::orderBy('id', 'desc')->paginate(3);
+            $points  = $points->where('points.student_code', 'like', '%' . $keyword . '%')
+                              ->orWhere('points.subject_code', 'like', '%' . $keyword . '%')
+                              ->orWhere('subjects.subject_name', 'like', '%' . $keyword . '%');
         }
+
+        $points = $points->orderBy('points.id', 'desc')
+                         ->paginate(5);
 
     	return view('hus.point.index', compact('points'))->with('title', 'Quản lý điểm');
     }

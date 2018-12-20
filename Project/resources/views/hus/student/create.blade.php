@@ -111,7 +111,7 @@
         var attributes = [
           {name: '', value: ''}
         ];
-        @if($attributes)
+        @if ($attributes)
           attributes = {!! $attributes !!};
         @endif
         return {
