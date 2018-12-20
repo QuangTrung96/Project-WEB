@@ -93,21 +93,18 @@
 	{{ Form::close() }}
 @endsection
 @section('code_js')
-  <script src='{{ asset('public/js/common.js') }}'></script>
   <script  type='text/javascript'>
     function loadForm(id_form) {
+      $('#add_subj').fadeOut('fast');
       $idForm = $('#' + id_form);
-
       if ($idForm.is(':hidden')) {
-        if (id_form == 'edit_subj') {
-          $('#add_subj').fadeOut('fast');
-          $idForm.fadeIn('fast');
-        } else {
-          $('#edit_subj').fadeOut('fast');
-          $idForm.fadeIn('fast');
-        }
+        $idForm.fadeIn('fast');
       } else {
-        $idForm.fadeOut('fast');
+        if (id_form != 'edit_subj') {
+          $('#edit_subj').fadeOut('fast');
+        } else {
+            $('#add_subj').fadeOut('fast');
+        }
       }
     }
 
@@ -248,9 +245,9 @@
       $('#edit_subj_id').val(id);
       $('#edit_subj_subject_code').val(subject_code);
       $('#edit_subj_subject_name').val(subject_name);
-      $('select[name=user_select] option[value=' + user_id + ']').attr('selected', 'selected');
-      $('select[name=credit_select] option[value=' + credit + ']').attr('selected', 'selected');
-      $('select[name=semester_select] option[value=' + semester_id + ']').attr('selected', 'selected');
+      $('select[name=user_select] option[value=' + user_id + ']').prop('selected', true);
+      $('select[name=credit_select] option[value=' + credit + ']').prop('selected', true);
+      $('select[name=semester_select] option[value=' + semester_id + ']').prop('selected', true);
       loadForm('edit_subj');
     }
 

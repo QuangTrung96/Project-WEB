@@ -47,11 +47,13 @@
 				@include('templates.menu')
 
 			</div>
+			<div id="go-to-top"></div>
 		</div>
 		
 		@include('templates.bottom')
 
 		<script type="text/javascript" src='{{ asset('public/js/jquery.min.js') }}'></script>
+		<script src='{{ asset('public/js/common.js') }}'></script>
 		
 		@yield("code_js")
 		

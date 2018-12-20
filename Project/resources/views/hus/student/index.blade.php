@@ -140,7 +140,6 @@
 @section('body_scripts_bottom')
 <script src='{{ asset('public/js/jquery-ui.min.js') }}'></script>
 <script src='{{ asset('public/js/bootstrap.min.js') }}'></script>
-<script src='{{ asset('public/js/common.js') }}'></script>
 <script type="text/javascript">
   $(document).ready(function () {
     init_dialog_form();

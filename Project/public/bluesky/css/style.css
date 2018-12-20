@@ -597,6 +597,24 @@ button[type="button"] {
     cursor: wait;
 }
 
+#go-to-top {
+    position: fixed;
+    bottom: 220px;
+    right: 10px;
+	width: 100px;
+    height: 130px;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+    color: #444;
+    text-decoration: none;
+    display: none;
+    background-image: url('../img/Up-Arrow-PNG-Photos.png');
+    background-size: 35%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 
 /* ==|== Primary Styles ends here
 	========================================================================== */

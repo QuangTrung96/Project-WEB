@@ -6,7 +6,7 @@
     }
 
     .table-log th {
-        background: url("../../../public/img/bg_box_head.jpg") repeat-x scroll 0 0 transparent;
+        background: url("{{ env('APP_URL') }}/public/img/bg_box_head.jpg") repeat-x scroll 0 0 transparent;
         border-left: 1px solid #ffffff;
         border-right: 1px solid #ffffff;
         color: #dacdcd;
