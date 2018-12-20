@@ -15,7 +15,7 @@ class CreatePointsTable extends Migration
     {
         Schema::create('points', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('subject_code')->unique();
+            $table->string('subject_code');
             $table->string('student_code');
             $table->tinyInteger('point');
             $table->date('exam_day');
