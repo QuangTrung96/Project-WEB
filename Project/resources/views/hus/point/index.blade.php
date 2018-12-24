@@ -73,7 +73,7 @@
                   <tr>
                     <td>{{ $point->student_code }}</td>
                     <td>{{ $point->subject_code }}</td>
-                    <td>{{ $point->subject_name }}</td>
+                    <td style='word-break: break-all'>{{ $point->subject_name }}</td>
                     <td>{{ $point->point }}</td>
                     <td>{{ $point->exam_day }}</td>
                     <td>
