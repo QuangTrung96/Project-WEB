@@ -62,6 +62,7 @@
                 <tr>
                   <th>MSV</th>
                   <th>Mã môn học</th>
+                  <th>Tên môn học</th>
                   <th>Điểm</th>
                   <th>Ngày thi</th>
                   <th>Chức năng</th>
@@ -72,6 +73,7 @@
                   <tr>
                     <td>{{ $point->student_code }}</td>
                     <td>{{ $point->subject_code }}</td>
+                    <td>{{ $point->subject_name }}</td>
                     <td>{{ $point->point }}</td>
                     <td>{{ $point->exam_day }}</td>
                     <td>
@@ -108,7 +110,7 @@
                 @empty
                   <br />
                   <tr class="text-center">
-                    <td colspan="5">Không có dữ liệu nào</td>
+                    <td colspan="6">Không có dữ liệu nào</td>
                   </tr>
                 @endforelse
               </tbody>
