@@ -38,8 +38,6 @@
         <div style="float: left;">
           @if (Sentinel::getUser()->hasAccess('student_add'))
             <a href='{{ route('student.create') }}' class='btn btn-primary'>Thêm sinh viên</a>
-          @else
-            <a href='javascript:void(0)' class='btn btn-primary'>Thêm sinh viên</a>
           @endif
         </div>
         <div style="float: right;">
@@ -66,7 +64,9 @@
                   <th>Họ và tên</th>
                   <th>Ngày sinh</th>
                   <th>Giới tính</th>
-                  <th>Chức năng</th>
+                  @if (Sentinel::getUser()->hasAccess('student_edit') || Sentinel::getUser()->hasAccess('student_delete'))
+                    <th>Chức năng</th>
+                  @endif
                 </tr>
               </thead>
               <tbody>
@@ -85,36 +85,29 @@
                     @else
                       <td>Nữ</td>
                     @endif
-                    <td>
-                      @if (Sentinel::getUser()->hasAccess('student_edit'))
-                      <a href="{{ route('student.show', ['id' => $student->id]) }}"
-                      class="btn btn-primary">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                      </a>
-                      @else
-                      <a href="javascript:void(0)"
-                      class="btn btn-primary">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                      </a>
-                      @endif
-                      @if (Sentinel::getUser()->hasAccess('student_delete'))
-                      <a href="{{ route('student.delete', ['id' => $student->id]) }}"
-                      class="btn btn-danger"
-                      onclick="event.preventDefault();
-                      window.confirm('Bạn đã chắc chắn xóa chưa ?') ?
-                      document.getElementById('student-delete-{{ $student->id }}').submit() :
-                      0;"><i class="glyphicon glyphicon-remove"></i></a>
-                      @else
-                      <a href="javascript:void(0)" class="btn btn-danger">
-                        <i class="glyphicon glyphicon-remove"></i>
-                      </a>
-                      @endif
-                      <form action="{{ route('student.delete', ['id' => $student->id]) }}"
-                        method="post" id="student-delete-{{ $student->id }}">
-                        {{ csrf_field() }}
-                        {{ method_field('delete') }}
-                      </form>
-                    </td>
+                    @if (Sentinel::getUser()->hasAccess('student_edit') || Sentinel::getUser()->hasAccess('student_delete'))
+                      <td>
+                        @if (Sentinel::getUser()->hasAccess('student_edit'))
+                        <a href="{{ route('student.show', ['id' => $student->id]) }}"
+                        class="btn btn-primary">
+                          <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+                        @endif
+                        @if (Sentinel::getUser()->hasAccess('student_delete'))
+                        <a href="{{ route('student.delete', ['id' => $student->id]) }}"
+                        class="btn btn-danger"
+                        onclick="event.preventDefault();
+                        window.confirm('Bạn đã chắc chắn xóa chưa ?') ?
+                        document.getElementById('student-delete-{{ $student->id }}').submit() :
+                        0;"><i class="glyphicon glyphicon-remove"></i></a>
+                        @endif
+                        <form action="{{ route('student.delete', ['id' => $student->id]) }}"
+                          method="post" id="student-delete-{{ $student->id }}">
+                          {{ csrf_field() }}
+                          {{ method_field('delete') }}
+                        </form>
+                      </td>
+                    @endif
                   </tr>
                 @empty
                   <br />
