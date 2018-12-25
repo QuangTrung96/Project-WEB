@@ -304,3 +304,7 @@ Route::get('create_user', function() {
 
 	return "Done";
 });
+
+Route::any('{query}', function() {
+    return view('welcome')->with('title', 'Không tìm thấy đường dẫn này !');
+})->where('query', '.*');

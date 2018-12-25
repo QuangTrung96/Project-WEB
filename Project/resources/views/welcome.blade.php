@@ -1,98 +1,72 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
 
-        <title>Laravel</title>
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ $title }}</title>
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('public/bluesky/css/style.css') }}" />
+    <link rel="shortcut icon" href="{{ asset('public/favicon.ico') }}" type="image/vnd.microsoft.icon" />
+    <style type="text/css">
+      #page_not_found {
+        width: 400px;
+        margin: 90px auto;
+        margin-left: 330px;
+      }
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+      #page_not_found img {
+        width: 40px;
+        height: 40px;
+      }
+    </style>
+  </head>
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+  <body>
+    <div class="centerfix" id="header">
+      <div class="centercontent">
+        <a href="{{ route('index') }}"><img src="{{ asset('public/bluesky/img/header/logo.png') }}" /></a>
+        <img src="{{ asset('public/bluesky/img/header/bannertxt_vi.png') }}" />
+        <img src="{{ asset('public/bluesky/img/header/medals.png') }}" />
+      </div>
+    </div>
 
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
+    <div class="centerfix" id="main" role="main">
+      <div class="centercontent clearfix">
+        <div id="contentblock">
+          @if(Session::has('error'))
+          <div class="warningx wredy"> {{ Session::get('error') }} </div>
+          @endif
+          
+          @if(Session::has('success'))
+          <div class="warningx wgreeny"> {{ Session::get('success') }} 
+            @if(Session::has('link'))
+              <a href="{{ Session::get('link') }}" style="color: #bace18">xem lại tại đây.</a>
             @endif
+          </div>
+          @endif
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+          <div id="page_not_found">
+            <h2><img src="{{ asset('public/img/warning.png') }}" />Không tìm thấy đường dẫn này</h2>
+            <h2>Vui lòng quay trở lại <a href="{{ route('index') }}">trang chủ</a></h2>
+          </div>
+          
         </div>
-    </body>
+      </div>
+      <div id="go-to-top"></div>
+    </div>
+    
+    @include('templates.bottom')
+
+    <script type="text/javascript" src='{{ asset('public/js/jquery.min.js') }}'></script>
+    <script src='{{ asset('public/js/common.js') }}'></script>
+    
+    @yield("code_js")
+    
+    @yield('body_scripts_bottom')
+
+  </body>
 </html>
